@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夏生的庭園 | Xia Sheng's Garden — Prometheus by the Sea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --gold: #b8956a;
+    --mist: #8a8278;
+    --deep: #2c2420;
+    --line: rgba(26,22,18,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    background: #0d1a1f;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    display: block;
+  }
+
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 70%, var(--paper));
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 40px;
+    position: relative;
+  }
+
+  .hero-text::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 15%;
+    height: 70%;
+    width: 0.5px;
+    background: var(--line);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 48px;
+  }
+
+  .hero-title-zh {
+    font-size: clamp(42px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-title-en {
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 300;
+    color: var(--mist);
+    letter-spacing: 0.2em;
+    font-style: italic;
+    margin-bottom: 48px;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--mist);
+    max-width: 340px;
+    line-height: 2;
+    margin-bottom: 48px;
+    font-style: italic;
+  }
+
+  .hero-desc-zh {
+    font-size: 14px;
+    color: var(--mist);
+    max-width: 320px;
+    line-height: 2;
+    margin-bottom: 48px;
+  }
+
+  .scroll-hint {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .scroll-hint::before {
+    content: '';
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 80px;
+    margin: 80px 0 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--line);
+  }
+
+  .divider-text {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 100px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 0.5px;
+    background: var(--line);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+  .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+  .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+  .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+  .timeline-item:nth-child(5) { animation-delay: 0.5s; }
+  .timeline-item:nth-child(6) { animation-delay: 0.6s; }
+  .timeline-item:nth-child(7) { animation-delay: 0.7s; }
+  .timeline-item:nth-child(8) { animation-delay: 0.8s; }
+  .timeline-item:nth-child(9) { animation-delay: 0.9s; }
+  .timeline-item:nth-child(10) { animation-delay: 1.0s; }
+  .timeline-item:nth-child(11) { animation-delay: 1.1s; }
+  .timeline-item:nth-child(12) { animation-delay: 1.2s; }
+
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -44px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 0.5px solid var(--mist);
+  }
+
+  .timeline-item.active .timeline-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184,149,106,0.15);
+  }
+
+  .timeline-item.upcoming .timeline-dot {
+    background: var(--paper);
+    border-color: var(--line);
+  }
+
+  .timeline-number {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .timeline-name-zh {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+
+  .timeline-name-en {
+    font-size: 13px;
+    color: var(--mist);
+    letter-spacing: 0.2em;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .timeline-status {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 0.5px solid;
+  }
+
+  .status-current {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .status-upcoming {
+    border-color: var(--line);
+    color: var(--mist);
+  }
+
+  .timeline-desc {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--mist);
+    font-style: italic;
+    line-height: 1.8;
+    max-width: 480px;
+  }
+
+  /* ── PREORDER ── */
+  .preorder-box {
+    border: 0.5px solid var(--line);
+    padding: 60px;
+    position: relative;
+    background: rgba(26,22,18,0.02);
+  }
+
+  .preorder-box::before {
+    content: '❊';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    padding: 0 16px;
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  .preorder-title-zh {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .preorder-title-en {
+    font-size: 13px;
+    color: var(--mist);
+    letter-spacing: 0.2em;
+    font-style: italic;
+    margin-bottom: 40px;
+  }
+
+  .preorder-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .preorder-item label {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .preorder-item p {
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  .preorder-note {
+    font-size: 12px;
+    color: var(--mist);
+    font-style: italic;
+    margin-bottom: 40px;
+    line-height: 2;
+  }
+
+  .preorder-cta {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 0.5px solid var(--ink);
+    padding: 14px 40px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: none;
+    font-family: inherit;
+  }
+
+  .preorder-cta:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ── QUOTE ── */
+  .quote-section {
+    text-align: center;
+    padding: 100px 80px;
+    border-top: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+    max-width: 100%;
+    margin: 0;
+    background: rgba(26,22,18,0.02);
+  }
+
+  .quote-text {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    letter-spacing: 0.05em;
+  }
+
+  .quote-source {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid var(--line);
+  }
+
+  .footer-brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--mist);
+    font-style: italic;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-image {
+      height: 60vh;
+    }
+
+    .hero-image::after {
+      background: linear-gradient(to bottom, transparent 60%, var(--paper));
+    }
+
+    .hero-text {
+      padding: 48px 32px;
+    }
+
+    section { padding: 60px 32px; }
+    .divider { padding: 0 32px; }
+    .preorder-box { padding: 40px 32px; }
+    .preorder-grid { grid-template-columns: 1fr; gap: 24px; }
+    footer { padding: 40px 32px; flex-direction: column; gap: 16px; text-align: center; }
+    .quote-section { padding: 60px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-image">
+    <!-- 請將奧菲莉亞海報圖片放於此，src換成實際路徑 -->
+    <img src="ophelie.jpg" alt="Ophélie — Xia Sheng's Garden" onerror="this.style.background='#0d1a1f';this.style.minHeight='100vh'">
+  </div>
+  <div class="hero-text">
+    <div class="brand">Prometheus by the Sea</div>
+    <h1 class="hero-title-zh">夏生的庭園</h1>
+    <p class="hero-title-en">Xia Sheng's Garden</p>
+    <p class="hero-desc">A garden that endures through eternity, unchanged.<br>Each character dwells in her own corner,<br>cycling through her story without end.</p>
+    <p class="hero-desc-zh">一座歷經永劫而不毀壞分毫的花園，<br>這些角色們各自據居角落，<br>在她們的故事中輪迴。</p>
+    <div class="scroll-hint">Scroll to explore</div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <p class="quote-text">「長年聽歌劇與這些角色共感，我在這些靈魂裡認出了一些永不過時的課題——那些在極端處境裡仍然試圖做出選擇的人，以及那些連選擇的權利都被奪走的人。」</p>
+  <p class="quote-source">夏生 · 海神甜點劇場</p>
+</div>
+
+<!-- TIMELINE -->
+<div class="divider">
+  <span class="divider-text">The Characters · 角色名單</span>
+</div>
+
+<section>
+  <div class="section-label">Progress · 計劃進程</div>
+  <div class="timeline">
+
+    <div class="timeline-item active">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">序章 · Prologue</div>
+      <div class="timeline-name-zh">吟遊詩人</div>
+      <div class="timeline-name-en">The Troubadour</div>
+      <span class="timeline-status status-current">已完成 · Complete</span>
+      <p class="timeline-desc">夏生以庭園主人的身份開場，迎接十一位女主角依序入駐。<br>Xia Sheng, as keeper of the garden, opens the door.</p>
+    </div>
+
+    <div class="timeline-item active">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第一章 · Chapter I</div>
+      <div class="timeline-name-zh">奧菲莉亞</div>
+      <div class="timeline-name-en">Ophélie</div>
+      <span class="timeline-status status-current">現正預購 · Now Open</span>
+      <p class="timeline-desc">她把回憶贈與旁人，卻將哀傷留給自己。<br>She gave away her memories, keeping only sorrow for herself.</p>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第二章 · Chapter II</div>
+      <div class="timeline-name-zh">卡門</div>
+      <div class="timeline-name-en">Carmen</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第三章 · Chapter III</div>
+      <div class="timeline-name-zh">薇奧萊塔</div>
+      <div class="timeline-name-en">Violetta</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第四章 · Chapter IV</div>
+      <div class="timeline-name-zh">露琪亞</div>
+      <div class="timeline-name-en">Lucia</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第五章 · Chapter V</div>
+      <div class="timeline-name-zh">夢遊女</div>
+      <div class="timeline-name-en">Amina</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第六章 · Chapter VI</div>
+      <div class="timeline-name-zh">夜后</div>
+      <div class="timeline-name-en">The Queen of the Night</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第七章 · Chapter VII</div>
+      <div class="timeline-name-zh">灰姑娘</div>
+      <div class="timeline-name-en">Cenerentola</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第八章 · Chapter VIII</div>
+      <div class="timeline-name-zh">澤比內塔</div>
+      <div class="timeline-name-en">Zerbinetta</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第九章 · Chapter IX</div>
+      <div class="timeline-name-zh">諾瑪</div>
+      <div class="timeline-name-en">Norma</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">第十章 · Chapter X</div>
+      <div class="timeline-name-zh">托絲卡</div>
+      <div class="timeline-name-en">Tosca</div>
+      <span class="timeline-status status-upcoming">即將到來 · Coming Soon</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PREORDER -->
+<div class="divider">
+  <span class="divider-text">Pre-order · 預購資訊</span>
+</div>
+
+<section>
+  <div class="preorder-box">
+    <h2 class="preorder-title-zh">奧菲莉亞甜點盒</h2>
+    <p class="preorder-title-en">Ophélie — Dessert Collection</p>
+    <div class="preorder-grid">
+      <div class="preorder-item">
+        <label>售價 · Price</label>
+        <p>NT$1,600 / 盒</p>
+      </div>
+      <div class="preorder-item">
+        <label>運費 · Shipping</label>
+        <p>冷凍宅配另計</p>
+      </div>
+      <div class="preorder-item">
+        <label>出貨 · Delivery</label>
+        <p>兩個月內</p>
+      </div>
+      <div class="preorder-item">
+        <label>訂購 · Order</label>
+        <p>私訊告知數量</p>
+      </div>
+    </div>
+    <p class="preorder-note">
+      這款甜點盒目前正在發想與製作中。每一款新作品試作完成後，將陸續發表照片——您訂購的不只是一盒甜點，而是參與一段從概念到完成的創作旅程。<br><br>
+      This collection is currently in development. Progress photos will be shared as each piece is created — your order is not just a box of desserts, but participation in a creative journey from concept to completion.
+    </p>
+    <button class="preorder-cta" onclick="window.location.href='https://www.facebook.com/ahummingbee/'">私訊預購 · Order Now</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Prometheus by the Sea · 海神甜點劇場</div>
+  <div class="footer-note">台南 · Tainan, Taiwan</div>
+</footer>
+
+</body>
+</html>

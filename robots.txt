@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shazensu-pixel.github.io/xia-sheng-garden/sitemap.xml

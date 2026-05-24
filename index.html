@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta name="google-site-verification" content="pakSb8V4beqLHfGMk3KzzgS--0r1kv4qQLQ1FpPNGIg" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夏生的庭園 | Hsia Sheng's Garden — Prometheus by the Sea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+TC:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --gold: #b8956a;
+    --mist: #8a8278;
+    --deep: #2c2420;
+    --crimson: #8a1515;
+    --line: rgba(26,22,18,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── LANGUAGE SWITCHER LOGIC ── */
+  body:not([data-lang="zh"]) .lang-zh { display: none !important; }
+  body:not([data-lang="en"]) .lang-en { display: none !important; }
+  body:not([data-lang="jp"]) .lang-jp { display: none !important; }
+  body:not([data-lang="fr"]) .lang-fr { display: none !important; }
+
+  .lang-nav {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    z-index: 100;
+    display: flex;
+    gap: 8px;
+    background: rgba(245, 240, 232, 0.9);
+    backdrop-filter: blur(8px);
+    padding: 6px 12px;
+    border: 0.5px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(26,22,18,0.05);
+  }
+
+  .lang-nav button {
+    background: none;
+    border: none;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--mist);
+    padding: 4px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  }
+
+  .lang-nav button.active {
+    background: var(--gold);
+    color: var(--paper);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 70vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    background: #0d1a1f;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+    display: block;
+  }
+
+  .hero-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 70%, var(--paper));
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 40px;
+    position: relative;
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 48px;
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 48px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    color: var(--mist);
+    max-width: 320px;
+    line-height: 2;
+    margin-bottom: 48px;
+  }
+  .lang-en .hero-desc, .lang-fr .hero-desc {
+    font-style: italic;
+    font-size: 15px;
+  }
+
+  .scroll-hint {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .scroll-hint::before {
+    content: '';
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 80px;
+    margin: 80px 0 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--line);
+  }
+
+  .divider-text {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 100px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  /* ── DIRECTOR SECTION ── */
+  .director-section {
+    padding: 100px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .director-left {
+    position: sticky;
+    top: 80px;
+  }
+
+  .director-name {
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    margin-bottom: 32px;
+  }
+
+  .director-role {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .director-role::after {
+    content: '';
+    width: 32px;
+    height: 0.5px;
+    background: var(--gold);
+  }
+
+  .director-manifesto {
+    font-size: 15px;
+    line-height: 2.1;
+    color: var(--ink);
+  }
+
+  .director-manifesto p {
+    margin-bottom: 24px;
+  }
+
+  .director-manifesto p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 0.5px;
+    background: var(--line);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 56px;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -44px;
+    top: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 0.5px solid var(--mist);
+  }
+
+  .timeline-item.active .timeline-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(184,149,106,0.15);
+  }
+
+  .timeline-item.upcoming .timeline-dot {
+    background: var(--paper);
+    border-color: var(--line);
+  }
+
+  .timeline-number {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+
+  .timeline-name {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .timeline-status {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 0.5px solid;
+  }
+
+  .status-current {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .status-upcoming {
+    border-color: var(--line);
+    color: var(--mist);
+  }
+
+  .timeline-desc {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--mist);
+    line-height: 1.8;
+    max-width: 480px;
+  }
+
+  /* ── ORBIT LAYOUT (THE RED BOX & DESSERTS) ── */
+  .orbit-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    align-items: center;
+    margin-top: 60px;
+    max-width: 1000px;
+  }
+
+  .orbit-sphere {
+    position: relative;
+    width: 460px;
+    height: 460px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 0.5px dashed var(--gold);
+  }
+
+  /* Crimson Red Box Concept */
+  .orbit-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 160px;
+    height: 160px;
+    background: var(--crimson);
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(26,22,18,0.25), inset 0 0 40px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  .orbit-center::before {
+    content: ''; position: absolute; width: 100%; height: 24px; background: var(--gold);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .orbit-center::after {
+    content: ''; position: absolute; height: 100%; width: 24px; background: var(--gold);
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+  }
+
+  .orbit-node {
+    position: absolute;
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    border: 3px solid var(--paper);
+    box-shadow: 0 8px 20px rgba(26,22,18,0.15);
+    z-index: 20;
+    background: var(--paper);
+  }
+
+  .orbit-node img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .orbit-node.active, .orbit-node:hover {
+    border-color: var(--gold);
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 30;
+  }
+
+  /* Specific Orbit Positions (0, 45, 90, 135, 180, 225, 270, 315 degrees) */
+  /* Radius = 50% (on edge). Let's put them exactly on the dashed line */
+  .node-1 { left: 50%; top: 0%; }
+  .node-2 { left: 85.35%; top: 14.65%; }
+  .node-3 { left: 100%; top: 50%; }
+  .node-4 { left: 85.35%; top: 85.35%; }
+  .node-5 { left: 50%; top: 100%; }
+  .node-6 { left: 14.65%; top: 85.35%; }
+  .node-7 { left: 0%; top: 50%; }
+  .node-8 { left: 14.65%; top: 14.65%; }
+
+  /* Orbit Info Panel */
+  .orbit-panel {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(26,22,18,0.02);
+    border: 0.5px solid var(--line);
+    padding: 40px;
+    position: relative;
+    min-height: 400px;
+  }
+
+  .orbit-panel-title {
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    font-weight: 400;
+  }
+
+  .orbit-panel-subtitle {
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+  }
+
+  .orbit-panel-poem {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--mist);
+    line-height: 2;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 1px solid var(--gold);
+  }
+
+  .orbit-panel-desc {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .orbit-panel-flavor {
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── QUOTE ── */
+  .quote-section {
+    text-align: center;
+    padding: 100px 80px;
+    border-top: 0.5px solid var(--line);
+    border-bottom: 0.5px solid var(--line);
+    max-width: 100%;
+    margin: 0;
+    background: rgba(26,22,18,0.02);
+  }
+
+  .quote-text {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    letter-spacing: 0.05em;
+  }
+
+  .quote-source {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid var(--line);
+  }
+
+  .footer-brand {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--mist);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .orbit-container { flex-direction: column; }
+    .orbit-sphere { width: 340px; height: 340px; margin: 40px auto; }
+    .orbit-center { width: 120px; height: 120px; }
+    .orbit-node { width: 64px; height: 64px; }
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-image { height: 60vh; }
+    .hero-image::after { background: linear-gradient(to bottom, transparent 60%, var(--paper)); }
+    .hero-text { padding: 48px 32px; }
+    section { padding: 60px 32px; }
+    .divider { padding: 0 32px; }
+    footer { padding: 40px 32px; flex-direction: column; gap: 16px; text-align: center; }
+    .quote-section { padding: 60px 32px; }
+    .director-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 32px; }
+    .director-left { position: static; }
+    .lang-nav { top: 20px; right: 20px; }
+    .orbit-sphere { width: 280px; height: 280px; }
+    .orbit-center { width: 100px; height: 100px; }
+    .orbit-node { width: 56px; height: 56px; }
+  }
+</style>
+</head>
+<body data-lang="zh">
+
+<!-- FIXED LANGUAGE SWITCHER -->
+<nav class="lang-nav">
+  <button onclick="setLang('zh')" class="btn-zh active">中</button>
+  <button onclick="setLang('en')" class="btn-en">EN</button>
+  <button onclick="setLang('jp')" class="btn-jp">日</button>
+  <button onclick="setLang('fr')" class="btn-fr">FR</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-image">
+    <img src="hero.jpg" alt="Prometheus by the Sea — Hsia Sheng's Garden" onerror="this.style.background='#0d1a1f';this.style.minHeight='70vh'">
+  </div>
+  <div class="hero-text">
+    <div class="brand">Prometheus by the Sea</div>
+    
+    <!-- ZH -->
+    <div class="lang-zh">
+      <h1 class="hero-title">夏生的庭園</h1>
+      <p class="hero-desc">一座歷經永劫而不毀壞分毫的花園，<br>這些角色們各自據居角落，<br>在她們的故事中輪迴。</p>
+    </div>
+    <!-- EN -->
+    <div class="lang-en">
+      <h1 class="hero-title">Hsia Sheng's Garden</h1>
+      <p class="hero-desc">A garden that endures through eternity, unchanged.<br>Each character dwells in her own corner,<br>cycling through her story without an end.</p>
+    </div>
+    <!-- JP -->
+    <div class="lang-jp">
+      <h1 class="hero-title" style="font-size: clamp(36px, 4vw, 54px);">夏生の庭園</h1>
+      <p class="hero-desc">永劫を経てなお、少しも朽ちることのない庭園。<br>ヒロインたちはそれぞれの片隅に居場所を見つけ、<br>自らの物語の中で輪廻を繰り返している。</p>
+    </div>
+    <!-- FR -->
+    <div class="lang-fr">
+      <h1 class="hero-title" style="font-size: clamp(32px, 3.5vw, 48px);">Le Jardin de Xia Sheng</h1>
+      <p class="hero-desc">Un jardin qui perdure à travers l'éternité, inaltéré.<br>Chaque personnage réside dans son propre recoin,<br>répétant son histoire sans fin.</p>
+    </div>
+
+    <div class="scroll-hint lang-zh">向下滑動探索</div>
+    <div class="scroll-hint lang-en">Scroll to explore</div>
+    <div class="scroll-hint lang-jp">スクロールして探索</div>
+    <div class="scroll-hint lang-fr">Défilez pour explorer</div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <!-- ZH -->
+  <div class="lang-zh">
+    <p class="quote-text">「長年聽歌劇與這些角色共感，我在這些靈魂裡認出了一些永不過時的課題——那些在極端處境裡仍然試圖做出選擇的人，以及那些連選擇的權利都被奪走的人。」</p>
+    <p class="quote-source">夏生 · 海神甜點劇場</p>
+  </div>
+  <!-- EN -->
+  <div class="lang-en">
+    <p class="quote-text">"Nourished by opera across the years, finding resonance in these characters, I have recognized within these souls certain timeless themes — those who, even in the most extreme circumstances, still strive to make a choice, and those from whom even the right to choose has been taken away."</p>
+    <p class="quote-source">Hsia Sheng · Prometheus by the Sea</p>
+  </div>
+  <!-- JP -->
+  <div class="lang-jp">
+    <p class="quote-text">「長年オペラを聴き、彼女たちと共感する中で、私はその魂に時代を超えた永遠の課題を見出しました——極限状態においてもなお選択を試みる者たち、そして、選択する権利さえも奪われた者たちを。」</p>
+    <p class="quote-source">夏生 · 海神甜點劇場</p>
+  </div>
+  <!-- FR -->
+  <div class="lang-fr">
+    <p class="quote-text">« Nourri par l'opéra à travers les années, trouvant une résonance en ces personnages, j'ai reconnu dans ces âmes des thèmes intemporels — ceux qui, même dans les circonstances les plus extrêmes, s'efforcent encore de faire un choix, et ceux à qui même le droit de choisir a été retiré. »</p>
+    <p class="quote-source">Hsia Sheng · Prometheus by the Sea</p>
+  </div>
+</div>
+
+<!-- DIRECTOR -->
+<div class="divider">
+  <span class="divider-text lang-zh">主持人</span>
+  <span class="divider-text lang-en">The Director</span>
+  <span class="divider-text lang-jp">ディレクター</span>
+  <span class="divider-text lang-fr">Le Directeur</span>
+</div>
+
+<div class="director-section">
+  <div class="director-left">
+    <div class="director-role lang-zh">計畫主持人</div>
+    <div class="director-role lang-en">Project Director</div>
+    <div class="director-role lang-jp">プロジェクトディレクター</div>
+    <div class="director-role lang-fr">Directeur du Projet</div>
+    
+    <div style="margin-top: 20px;">
+      <div class="director-name lang-zh">蘇夏生</div>
+      <div class="director-name lang-en">Hsia Sheng Su</div>
+      <div class="director-name lang-jp">蘇 夏生</div>
+      <div class="director-name lang-fr">Hsia Sheng Su</div>
+    </div>
+    
+    <div style="margin-top: 32px; font-size: 11px; letter-spacing: 0.2em; color: var(--mist); line-height: 2.2;">
+      <span class="lang-zh">海神甜點劇場<br>台南 · 台灣</span>
+      <span class="lang-en">Prometheus by the Sea<br>Tainan, Taiwan</span>
+      <span class="lang-jp">海神甜點劇場<br>台南 · 台湾</span>
+      <span class="lang-fr">Prometheus by the Sea<br>Tainan, Taïwan</span>
+    </div>
+  </div>
+
+  <div class="director-manifesto">
+    <!-- ZH -->
+    <div class="lang-zh">
+      <p>我不只是一個做甜點的人。</p>
+      <p>同時我也是一個計畫主持人——甜點是這個計畫展現的媒介而不是全部。</p>
+      <p>夏生的庭園是一個十二章的甜點計畫。每一個章節從一位歌劇女主角的命運出發，提煉出一個情感命題，再把這個命題轉化成可以被觸摸、被品嚐、被記憶的物質。選角的標準只有一個：她們與選擇的關係——那些在極端處境裡仍然試圖做出選擇的人，以及那些連選擇的權利都被奪走的人。</p>
+      <p>所有的食材、視覺、攝影語言，都由命題為核心孕育發展，先決定主角的調性，再選擇最適切的表現方式。每一個章節完成之後，我會公開寫下它的檢討——哪裡到位了，哪裡沒有。這個計畫不只在做作品，它在主持一個有標準的過程，而這個標準由我自己來檢驗。</p>
+      <p>最終，這座永生的花園將生出它自己的語言，生生不息。</p>
+    </div>
+    <!-- EN -->
+    <div class="lang-en">
+      <p>I am not just a pastry chef.</p>
+      <p>I am also a project director — pastry is the medium through which this project manifests, but it is not the entirety of it.</p>
+      <p>Hsia Sheng's Garden is a twelve-chapter pastry project. Each chapter stems from the fate of an opera heroine, distilling an emotional proposition, and then transforming that proposition into a substance that can be touched, tasted, and remembered. There is only one criterion for casting: their relationship with choice — those who still try to make choices in extreme situations, and those from whom even the right to choose has been stripped away.</p>
+      <p>Ultimately, this immortal garden will birth its own language, living and breathing endlessly.</p>
+    </div>
+    <!-- JP -->
+    <div class="lang-jp">
+      <p>私はただのパティシエではありません。</p>
+      <p>同時に、プロジェクトディレクターでもあります。デザートはこのプロジェクトを表現する媒介であり、すべてではありません。</p>
+      <p>「夏生の庭園」は12章からなるデザートプロジェクトです。各章は、一人のオペラヒロインの運命を出発点とし、感情的な命題を抽出し、それを触れ、味わい、記憶できる物質へと変換します。キャスティングの基準はただ一つ、彼女たちと「選択」との関係です——極限の状況下でなお選択しようとする者、そして選択の権利すら奪われた者。</p>
+      <p>最終的に、この永遠の庭園は独自の言語を生み出し、絶え間なく生き続けるでしょう。</p>
+    </div>
+    <!-- FR -->
+    <div class="lang-fr">
+      <p>Je ne suis pas seulement un pâtissier.</p>
+      <p>Je suis également directeur de projet — la pâtisserie est le médium par lequel ce projet se manifeste, mais ce n'est pas sa totalité.</p>
+      <p>Le Jardin de Xia Sheng est un projet de pâtisserie en douze chapitres. Chaque chapitre s'inspire du destin d'une héroïne d'opéra, distillant une proposition émotionnelle pour ensuite la transformer en une substance qui peut être touchée, goûtée et mémorisée. Il n'y a qu'un seul critère de sélection : leur relation au choix — celles qui tentent encore de faire des choix dans des situations extrêmes, et celles à qui même le droit de choisir a été retiré.</p>
+      <p>En fin de compte, ce jardin immortel donnera naissance à son propre langage, vivant et respirant à l'infini.</p>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="divider">
+  <span class="divider-text lang-zh">角色名單</span>
+  <span class="divider-text lang-en">The Characters</span>
+  <span class="divider-text lang-jp">キャラクター</span>
+  <span class="divider-text lang-fr">Les Personnages</span>
+</div>
+
+<section>
+  <div class="section-label">
+    <span class="lang-zh">計劃進程</span>
+    <span class="lang-en">Progress</span>
+    <span class="lang-jp">進捗状況</span>
+    <span class="lang-fr">Progression</span>
+  </div>
+  <div class="timeline">
+
+    <!-- PROLOGUE -->
+    <div class="timeline-item active">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">
+        <span class="lang-zh">序章</span><span class="lang-en">Prologue</span><span class="lang-jp">序章</span><span class="lang-fr">Prologue</span>
+      </div>
+      <div class="timeline-name">
+        <span class="lang-zh">吟遊詩人</span><span class="lang-en">The Troubadour</span><span class="lang-jp">吟遊詩人</span><span class="lang-fr">Le Troubadour</span>
+      </div>
+      <span class="timeline-status status-current">
+        <span class="lang-zh">已完成</span><span class="lang-en">Complete</span><span class="lang-jp">完了</span><span class="lang-fr">Terminé</span>
+      </span>
+      <p class="timeline-desc">
+        <span class="lang-zh">夏生以庭園主人的身份開場，迎接十一位女主角依序入駐。</span>
+        <span class="lang-en">Hsia Sheng, as keeper of the garden, opens the door for the eleven heroines.</span>
+        <span class="lang-jp">夏生は庭園の主として扉を開け、11人のヒロインたちを順に迎え入れる。</span>
+        <span class="lang-fr">Hsia Sheng, en tant que gardien du jardin, ouvre la porte aux onze héroïnes.</span>
+      </p>
+    </div>
+
+    <!-- CHAPTER I: OPHÉLIE (ORBIT LAYOUT INTEGRATION) -->
+    <div class="timeline-item active">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number">
+        <span class="lang-zh">第一章</span><span class="lang-en">Chapter I</span><span class="lang-jp">第一章</span><span class="lang-fr">Chapitre I</span>
+      </div>
+      <div class="timeline-name">
+        <span class="lang-zh">奧菲莉亞</span><span class="lang-en">Ophélie</span><span class="lang-jp">オフェリア</span><span class="lang-fr">Ophélie</span>
+      </div>
+      <span class="timeline-status status-current">
+        <span class="lang-zh">預購已截止</span><span class="lang-en">Pre-order Closed</span><span class="lang-jp">予約受付終了</span><span class="lang-fr">Précommande Clôturée</span>
+      </span>
+      <p class="timeline-desc">
+        <span class="lang-zh">她把回憶贈與旁人，卻將哀傷留給自己。</span>
+        <span class="lang-en">She gave away her memories, keeping only sorrow for herself.</span>
+        <span class="lang-jp">彼女は思い出を他人に贈り、哀しみだけを自らに残した。</span>
+        <span class="lang-fr">Elle a offert ses souvenirs, ne gardant que le chagrin pour elle-même.</span>
+      </p>
+      
+      <!-- THE ORBIT LAYOUT -->
+      <div class="orbit-container">
+        <!-- Circular Orbit Sphere -->
+        <div class="orbit-sphere">
+          <div class="orbit-center"></div> <!-- The Crimson Red Box -->
+          
+          <!-- 8 Dessert Nodes -->
+          <div class="orbit-node node-1 active" onclick="updateDessert(0)">
+            <img src="ophelie-8.jpg" alt="Dessert 1" onerror="this.src='https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-2" onclick="updateDessert(1)">
+            <img src="ophelie-1.jpg" alt="Dessert 2" onerror="this.src='https://images.unsplash.com/photo-1511018556340-d16986a1c194?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-3" onclick="updateDessert(2)">
+            <img src="ophelie-2.jpg" alt="Dessert 3" onerror="this.src='https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-4" onclick="updateDessert(3)">
+            <img src="ophelie-5.jpg" alt="Dessert 4" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-5" onclick="updateDessert(4)">
+            <img src="ophelie-7.jpg" alt="Dessert 5" onerror="this.src='https://images.unsplash.com/photo-1508737804141-4c3b688e2546?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-6" onclick="updateDessert(5)">
+            <img src="ophelie-3a.jpg" alt="Dessert 6" onerror="this.src='https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-7" onclick="updateDessert(6)">
+            <img src="ophelie-4a.jpg" alt="Dessert 7" onerror="this.src='https://images.unsplash.com/photo-1524351199679-46cddf530c04?w=100&q=80'">
+          </div>
+          <div class="orbit-node node-8" onclick="updateDessert(7)">
+            <img src="ophelie-6a.jpg" alt="Dessert 8" onerror="this.src='https://images.unsplash.com/photo-1587314168485-3236d6710814?w=100&q=80'">
+          </div>
+        </div>
+
+        <!-- The Dynamic Detail Panel -->
+        <div class="orbit-panel">
+          <h4 class="orbit-panel-title" id="panel-title">奧菲莉亞的沉溺</h4>
+          <p class="orbit-panel-subtitle" id="panel-subtitle">桑椹香草慕斯</p>
+          <div class="orbit-panel-poem" id="panel-poem">
+            最後那一瞬間，你在想什麼？<br>水面浮花是否給了你安慰？<br>水中的泡沫環抱你如同愛侶？
+          </div>
+          <p class="orbit-panel-desc" id="panel-desc">這款作品是奧菲莉亞甜點盒的主角，也是最後一款。以奧菲莉亞沉溺的瞬間為發想，取樣自 John Everett Millais 的畫作《奧菲莉亞》。有那麼一瞬間，我彷彿也在這逼人的美景之中，隨之窒息。</p>
+          <p class="orbit-panel-flavor" id="panel-flavor">風味：香草／桑椹／芝麻／泥煤及波本威士忌</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPCOMING CHAPTERS -->
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number"><span class="lang-zh">第二章</span><span class="lang-en">Chapter II</span><span class="lang-jp">第二章</span><span class="lang-fr">Chapitre II</span></div>
+      <div class="timeline-name"><span class="lang-zh">卡門</span><span class="lang-en">Carmen</span><span class="lang-jp">カルメン</span><span class="lang-fr">Carmen</span></div>
+    </div>
+    <div class="timeline-item upcoming">
+      <div class="timeline-dot"></div>
+      <div class="timeline-number"><span class="lang-zh">第三章</span><span class="lang-en">Chapter III</span><span class="lang-jp">第三章</span><span class="lang-fr">Chapitre III</span></div>
+      <div class="timeline-name"><span class="lang-zh">薇奧萊塔</span><span class="lang-en">Violetta</span><span class="lang-jp">ヴィオレッタ</span><span class="lang-fr">Violetta</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Prometheus by the Sea</div>
+  <div class="footer-note">Tainan, Taiwan</div>
+  <div class="footer-note-italic">© 2026 Prometheus by the Sea. All rights reserved.</div>
+</footer>
+
+<script>
+// The Database for the Orbit Dessert Layout (Pure, Refined Translations)
+const dessertDB = [
+  {
+    zh: { title: "奧菲莉亞的沉溺", sub: "桑椹香草慕斯", poem: "最後那一瞬間，你在想什麼？<br>水面浮花是否給了你安慰？<br>水中的泡沫環抱你如同愛侶？", desc: "這款作品是奧菲莉亞甜點盒的主角，也是最後一款。以奧菲莉亞沉溺的瞬間為發想，取樣自 John Everett Millais 的畫作《奧菲莉亞》。有那麼一瞬間，我彷彿也在這逼人的美景之中，隨之窒息。", flavor: "風味：香草／桑椹／芝麻／泥煤及波本威士忌" },
+    en: { title: "Ophélie's Submersion", sub: "Mulberry Vanilla Mousse", poem: "In that final moment, what were you thinking?<br>Did the blossoms drifting on the water bring you comfort?<br>Did the bubbles in the water embrace you like a lover?", desc: "This creation is the protagonist of the Ophélie Dessert Box. Conceived from the moment of Ophélie's submersion, it draws inspiration from John Everett Millais's painting, Ophelia. For a moment, I felt myself suffocating along with her within this pressingly beautiful scene.", flavor: "Flavors: Vanilla / Mulberry / Sesame / Peated Whisky" },
+    jp: { title: "オフェリアの沈溺", sub: "マルベリーとバニラのムース", poem: "その最後の瞬間、あなたは何を思っていたのだろう？<br>水面に漂う花々はあなたに安らぎを与えてくれただろうか？<br>水中の泡沫は愛する者のようにあなたを抱きしめただろうか？", desc: "この作品はオフェリア・デザートボックスの主役です。オフェリアが水に沈む瞬間を発想の原点とし、ジョン・エヴァレット・ミレーの絵画《オフェリア》からインスピレーションを得ました。ある一瞬、私もこの迫り来るような美しさの中で、窒息していくような感覚を覚えました。", flavor: "風味：バニラ／マルベリー／胡麻／ピーテッドウイスキー" },
+    fr: { title: "La Submersion d'Ophélie", sub: "Mousse Vanille et Mûre", poem: "À cet instant ultime, à quoi pensais-tu ?<br>Les fleurs flottant à la surface t'ont-elles apporté du réconfort ?<br>Les bulles de l'eau t'ont-elles enlacée comme un amant ?", desc: "Cette création est le protagoniste du coffret Ophélie. Conçue à partir du moment de la submersion d'Ophélie, elle s'inspire du tableau d'Ophelia de John Everett Millais. Pendant un instant, j'ai eu l'impression de suffoquer avec elle au milieu de cette beauté si pressante.", flavor: "Saveurs : Vanille / Mûre / Sésame / Whisky tourbé" }
+  },
+  {
+    zh: { title: "陰暗之火", sub: "巧克力塔", poem: "是目睹？還是召喚？<br>她究竟是在瘋狂中看見了她們？還是在召喚她們？", desc: "水妖是否承載了奧菲莉亞無處安放的憤怒與慾望？或許她渴望成為眼中燃燒著憤怒慾火的水妖，卻終身守護著純潔的形象與愛情。", flavor: "風味：草莓／辣椒／巧克力／泥煤威士忌" },
+    en: { title: "Dark Fire", sub: "Chocolate Tart", poem: "Is it a witnessing? Or a summoning?<br>Did she see them in her madness, or was she calling them forth?", desc: "Did the water nymphs carry Ophélie's misplaced anger and desires? Perhaps she yearned to become a nymph burning with the fire of rage, yet spent her life guarding a pure image of love.", flavor: "Flavors: Strawberry / Chili / Chocolate / Peated Whisky" },
+    jp: { title: "陰暗之火", sub: "チョコレートタルト", poem: "それは目撃か？それとも召喚か？<br>彼女は狂気の中で彼女たちを見たのか、それとも呼び寄せたのか？", desc: "水の精はオフェリアの行き場のない怒りと欲望を体現していたのだろうか？怒りの炎を燃やす水の精になりたいと渇望しながらも、彼女は生涯を通じて純粋な愛とイメージを守り抜いたのかもしれない。", flavor: "風味：ストロベリー／チリ／チョコレート／ピーテッドウイスキー" },
+    fr: { title: "Feu Sombre", sub: "Tartelette au Chocolat", poem: "Est-ce une vision ? Ou une invocation ?<br>Les a-t-elle vues dans sa folie, ou les appelait-elle ?", desc: "Les nymphes des eaux portaient-elles la colère et les désirs refoulés d'Ophélie ? Peut-être désirait-elle devenir une nymphe brûlante de rage, tout en gardant toute sa vie l'image pure de l'amour.", flavor: "Saveurs : Fraise / Piment / Chocolat / Whisky tourbé" }
+  },
+  {
+    zh: { title: "Never Forget Me", sub: "抹茶檸檬瑪德蓮", poem: "她漂浮在水面上，<br>花還在手裡，但她已經不在了。", desc: "謹將此作獻給遠行的摯友 Benson。感謝你多年來溫柔的相伴。所有未竟的遺憾，我將它們一同封存在這款作品裡。", flavor: "風味：抹茶／桑椹／檸檬" },
+    en: { title: "Never Forget Me", sub: "Matcha Lemon Madeleine", poem: "She floated on the water's surface,<br>the flowers still in her hands, but she was already gone.", desc: "Dedicated to my dear departed friend, Benson. Thank you for your gentle companionship over the years. I have sealed all unfulfilled regrets within this creation.", flavor: "Flavors: Matcha / Mulberry / Lemon" },
+    jp: { title: "Never Forget Me", sub: "抹茶とレモンのマドレーヌ", poem: "彼女は水面に漂っていた、<br>花はまだその手にあったが、彼女はもういなかった。", desc: "遠くへ旅立った親友、Bensonに捧げます。長年の優しい交友に感謝します。未完の遺憾のすべてを、この作品の中に共に封印します。", flavor: "風味：抹茶／マルベリー／レモン" },
+    fr: { title: "Never Forget Me", sub: "Madeleine Matcha Citron", poem: "Elle flottait à la surface de l'eau,<br>les fleurs encore entre ses mains, mais elle n'était plus là.", desc: "Dédié à mon cher ami disparu, Benson. Merci pour ta douce compagnie au fil des années. J'ai scellé tous nos regrets inachevés dans cette création.", flavor: "Saveurs : Matcha / Mûre / Citron" }
+  },
+  {
+    zh: { title: "夜與夜的旅人", sub: "藍莓費南雪", poem: "只是想找尋光，卻往愈來愈深的夜裡走去。<br>以為時空會為你裂開縫隙，但那人再也沒有出現。", desc: "這款作品的命名取自吉本芭娜娜同名小說。我無意重現那個悲傷的故事，只是奧菲莉亞在清晨從宮殿中安靜出走，前往那條河流之前，踩踏的究竟是怎樣的黑暗？", flavor: "風味：泥煤威士忌／藍莓／蜂蜜／巧克力" },
+    en: { title: "Night Traveler", sub: "Blueberry Financier", poem: "Only seeking light, yet walking into ever-deepening night.<br>Believing time would open a rift, but that person never appeared.", desc: "Named after Banana Yoshimoto's novel. I do not intend to recreate that sad tale, but what kind of darkness did Ophélie step into when she quietly left the palace at dawn towards that river?", flavor: "Flavors: Peated Whisky / Blueberry / Honey / Chocolate" },
+    jp: { title: "夜と夜の旅人", sub: "ブルーベリーのフィナンシェ", poem: "ただ光を探したかったのに、ますます深い夜へと歩んでゆく。<br>時空が裂け目をみせてくれると信じたが、その人は二度と現れなかった。", desc: "吉本ばななの同名小説から名付けられました。悲しい物語を再現するつもりはありませんが、オフェリアが夜明けに宮殿を静かに出発し、あの川へ向かう前、一体どのような暗闇を踏みしめていたのでしょうか？", flavor: "風味：ピーテッドウイスキー／ブルーベリー／蜂蜜／チョコレート" },
+    fr: { title: "Le Voyageur de la Nuit", sub: "Financier à la Myrtille", poem: "Cherchant seulement la lumière, mais marchant vers une nuit toujours plus profonde.<br>Croyant que le temps ouvrirait une faille, mais cette personne n'est jamais apparue.", desc: "Tiré du roman de Banana Yoshimoto. Je ne compte pas recréer cette triste histoire, mais dans quelles ténèbres Ophélie a-t-elle marché lorsqu'elle a quitté le palais à l'aube pour rejoindre cette rivière ?", flavor: "Saveurs : Whisky tourbé / Myrtille / Miel / Chocolat" }
+  },
+  {
+    zh: { title: "秘密的歡愉", sub: "巧克力費南雪", poem: "難道，沒有愛嗎？<br>關於你我，許多歡愉的記憶仍暗潮流動。", desc: "倘若不存在愛，失去時並不會感覺痛苦。而奧菲莉亞與哈姆雷特間，必然也存在著兩人共同的秘密與歡愉。以極高酸度與沈穩可可脂撞擊出最不對稱的感官回報。", flavor: "風味：泥煤威士忌／百香果／焦糖奶油／巧克力" },
+    en: { title: "Secret Pleasure", sub: "Chocolate Financier", poem: "Could it be that there was no love?<br>Between you and me, many joyous memories still flow in undercurrents.", desc: "If there were no love, loss would not bring pain. Between Ophélie and Hamlet, there must have been shared secrets and joys. A fierce clash of high acidity and deep cocoa butter.", flavor: "Flavors: Peated Whisky / Passion Fruit / Caramel / Chocolate" },
+    jp: { title: "秘密の愉悦", sub: "チョコレートのフィナンシェ", poem: "まさか、愛はなかったのだろうか？<br>あなたと私の間には、多くの歓喜の記憶が今も暗流のように流れている。", desc: "愛が存在しなければ、失う時に苦しみを感じることはありません。オフェリアとハムレットの間にも、必ず共有された秘密と喜びがあったはずです。極めて高い酸味と落ち着いたカカオバターが衝突します。", flavor: "風味：ピーテッドウイスキー／パッションフルーツ／キャラメル／チョコレート" },
+    fr: { title: "Plaisir Secret", sub: "Financier au Chocolat", poem: "Se pourrait-il qu'il n'y ait pas eu d'amour ?<br>Entre toi et moi, de nombreux souvenirs joyeux coulent encore en sous-courant.", desc: "S'il n'y avait pas d'amour, la perte n'apporterait pas de douleur. Entre Ophélie et Hamlet, il devait y avoir des secrets et des joies partagées. Un choc intense entre une acidité élevée et un profond beurre de cacao.", flavor: "Saveurs : Whisky tourbé / Fruit de la Passion / Caramel / Chocolat" }
+  },
+  {
+    zh: { title: "幽冥沁入她的靈魂", sub: "優格磅蛋糕", poem: "她從宮殿逃入夜裡的森林，<br>對著虛空宣告自己的名字。", desc: "外部是晦暗的，內裡仍是白的——但幽冥已找到縫隙，正在沁入。切開的動作是敘事本身。這次的創作是一條危險而執著的道路。", flavor: "風味：桑椹／蘭姆酒漬櫻桃／優格" },
+    en: { title: "Sinking Soul", sub: "Yogurt Pound Cake", poem: "She fled from the palace into the night forest,<br>declaring her name to the void.", desc: "The exterior is dim, the inside still pure—but the darkness has found a crack and is seeping in. The act of slicing is the narrative itself. This creation is a dangerous and persistent path.", flavor: "Flavors: Mulberry / Rum-soaked Cherry / Yogurt" },
+    jp: { title: "幽冥、彼女の魂に浸み入る", sub: "ヨーグルトのパウンドケーキ", poem: "彼女は宮殿から夜の森へと逃れ、<br>虚空に向かって自らの名を宣言した。", desc: "外側は暗く、内側はまだ白い——しかし、幽冥は隙間を見つけ、すでに染み込んでいる。切り分ける動作そのものが物語を語ります。今回の創作は危険で執念深い道でした。", flavor: "風味：マルベリー／ラム酒漬けチェリー／ヨーグルト" },
+    fr: { title: "La Mort dans l'Âme", sub: "Cake au Yaourt", poem: "Elle s'enfuit du palais dans la forêt nocturne,<br>déclarant son nom au vide.", desc: "L'extérieur est sombre, l'intérieur encore blanc — mais les ténèbres ont trouvé une faille et s'y infiltrent. L'acte de couper est le récit lui-même. Cette création est un chemin dangereux et persistant.", flavor: "Saveurs : Mûre / Cerise au Rhum / Yaourt" }
+  },
+  {
+    zh: { title: "遠山的凝視", sub: "芝麻抹茶磅蛋糕", poem: "倘若能將目光自水面的繁花移開，往前，再往前，<br>再往更遠更遠的地方眺望，你會看見遠山。遠山也凝視著你。", desc: "無論你背負著多大的傷痛，願自然給予你安慰。以大自然類比我們的生命更迭，各種哀傷都只是宇宙間的一顆塵埃而已。給每一位正在經歷傷痛的人。", flavor: "風味：芝麻／抹茶／干邑白蘭地" },
+    en: { title: "Distant Gaze", sub: "Sesame Matcha Pound Cake", poem: "If you could tear your gaze away from the blossoms on the water, look forward, further forward,<br>you would see the distant mountains. And the distant mountains gaze back at you.", desc: "No matter how much pain you bear, may nature grant you comfort. Compared to the cycles of nature, all sorrows are but dust in the universe. Dedicated to anyone experiencing pain.", flavor: "Flavors: Sesame / Matcha / Cognac" },
+    jp: { title: "遠い山からの凝視", sub: "胡麻と抹茶のパウンドケーキ", poem: "水面に漂う花々から視線を外し、前へ、さらに前へ、<br>もっと遠くを見つめれば、遠い山が見えるだろう。そして遠い山もあなたを見つめ返している。", desc: "どれほどの痛みを背負っていても、自然があなたに慰めを与えてくれますように。自然の移り変わりと比べれば、あらゆる悲しみは宇宙の塵に過ぎません。今、痛みを経験しているすべての人へ。", flavor: "風味：胡麻／抹茶／コニャック" },
+    fr: { title: "Le Regard du Mont", sub: "Cake au Sésame et Matcha", poem: "Si vous pouviez détacher votre regard des fleurs sur l'eau, regarder devant, encore plus loin,<br>vous verriez les montagnes lointaines. Et les montagnes lointaines vous regardent en retour.", desc: "Peu importe la douleur que vous portez, que la nature vous accorde le réconfort. Comparées aux cycles de la nature, toutes les peines ne sont que de la poussière dans l'univers. Dédié à tous ceux qui souffrent.", flavor: "Saveurs : Sésame / Matcha / Cognac" }
+  },
+  {
+    zh: { title: "水仙的嘆息", sub: "切片乳酪蛋糕", poem: "那還是愛嗎？<br>假如每一次的抉擇，他選擇的，都不是她。", desc: "「To be or not to be」的質問與嘆息裡，奧菲莉亞並不存在。愛是什麼？以局外人的角度觀看，每一個分岔路口，哈姆雷特都沒有選擇奧菲莉亞。那樣的愛，不過是凋落水底的水仙花罷了。", flavor: "風味：檸檬酒／金盞花／梔子花／奶油乳酪" },
+    en: { title: "Narcissus' Sigh", sub: "Sliced Cheesecake", poem: "Was it still love?<br>If, at every crossroads, the choice he made was never her.", desc: "In the question of 'To be or not to be', Ophélie does not exist. What is love? From an outsider's view, Hamlet never chose Ophélie. Such love is nothing but a fallen narcissus in the water.", flavor: "Flavors: Limoncello / Marigold / Gardenia / Cream Cheese" },
+    jp: { title: "水仙の嘆息", sub: "スライスチーズケーキ", poem: "それはまだ愛なのだろうか？<br>もし、すべての岐路において、彼が選んだのが彼女でなかったとしたら。", desc: "「To be or not to be」の問いと嘆きの中に、オフェリアは存在しない。愛とは何か？第三者の視点から見れば、ハムレットは決してオフェリアを選ばなかった。そのような愛は、水底に散る水仙に過ぎない。", flavor: "風味：リモンチェッロ／マリーゴールド／クチナシ／クリームチーズ" },
+    fr: { title: "Le Soupir de Narcisse", sub: "Cheesecake en Tranche", poem: "Était-ce encore de l'amour ?<br>Si, à chaque carrefour, le choix qu'il a fait n'était jamais elle.", desc: "Dans la question du « Être ou ne pas être », Ophélie n'existe pas. Qu'est-ce que l'amour ? D'un point de vue extérieur, Hamlet n'a jamais choisi Ophélie. Un tel amour n'est rien d'autre qu'un narcisse tombé dans l'eau.", flavor: "Saveurs : Limoncello / Souci / Gardénia / Fromage à la Crème" }
+  }
+];
+
+let globalLang = 'zh';
+let currentActiveNode = 0;
+
+function setLang(lang) {
+  globalLang = lang;
+  
+  // Set global body attribute to trigger CSS display switching
+  document.body.setAttribute('data-lang', lang);
+
+  // Update Nav Buttons State
+  const buttons = document.querySelectorAll('.lang-nav button');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.btn-${lang}`).classList.add('active');
+
+  // Refresh current active dessert content in the new language
+  updateDessert(currentActiveNode);
+}
+
+function updateDessert(index) {
+  currentActiveNode = index;
+  const data = dessertDB[index][globalLang];
+  
+  // Update Panel
+  document.getElementById('panel-title').innerHTML = data.title;
+  document.getElementById('panel-subtitle').innerHTML = data.sub;
+  document.getElementById('panel-poem').innerHTML = data.poem;
+  document.getElementById('panel-desc').innerHTML = data.desc;
+  document.getElementById('panel-flavor').innerHTML = data.flavor;
+
+  // Animate the panel contents for an elegant transition
+  gsap.fromTo(".orbit-panel", {opacity: 0, x: 10}, {opacity: 1, x: 0, duration: 0.6, ease: "power2.out"});
+
+  // Update Active Visual State on Nodes
+  const nodes = document.querySelectorAll('.orbit-node');
+  nodes.forEach((node, i) => {
+    if (i === index) {
+      node.classList.add('active');
+    } else {
+      node.classList.remove('active');
+    }
+  });
+}
+
+// Initial set lang logic (matches default attribute)
+setLang('zh');
+
+</script>
+</body>
+</html>

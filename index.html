@@ -162,7 +162,7 @@
     border: 1px solid var(--line); 
     background-color: var(--paper); 
     overflow: hidden;
-    background-image: url('garden-map-desktop.jpg?v=20260602');
+    background-image: url('garden-map-desktop.jpg?v=20260602_v3');
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -191,7 +191,7 @@
   .locked .node-icon { border-color: var(--mist); }
   .locked .node-icon::after { border-color: var(--mist); }
   
-  /* 標題：多層次羊皮紙光暈，徹底燒穿底圖雜訊，確保絕對清晰 (修復語法斷層) */
+  /* 標題：多層次羊皮紙光暈，徹底燒穿底圖雜訊，確保絕對清晰 */
   .node-title { 
     font-size: 16px; 
     letter-spacing: 0.1em; 
@@ -207,36 +207,34 @@
       0 0 30px var(--paper);
   }
 
-  /* 副標題：移除現代塑料感邊框，改用高斯模糊羊皮紙底色融合 */
+  /* 副標題：純色防禦標籤 */
   .node-subtitle { 
     font-size: 9px; 
     letter-spacing: 0.2em; 
     color: var(--ink); 
     text-transform: uppercase; 
     white-space: nowrap; 
-    background: rgba(245, 240, 232, 0.85); 
-    backdrop-filter: blur(4px);
+    background: rgba(245, 240, 232, 0.9); 
     padding: 3px 10px; 
     border-radius: 12px; 
-    box-shadow: 0 4px 10px rgba(245, 240, 232, 0.4);
+    box-shadow: 0 2px 8px rgba(245, 240, 232, 0.6);
   }
 
   /* ══════════════════════════════════════
-     夏生的庭園——節點坐標微調 (桌機版 16:10)
-     針對 17 世紀博物館級古地圖進行負空間極致避讓
+     夏生的庭園——節點坐標微調 (桌機版橫幅)
   ══════════════════════════════════════ */
-  .zone-prologue   { top: 29%; left: 50%; }   /* 下沉，完美閃避頂部 HORTUS 標題 */
-  .zone-ophelia    { top: 38%; left: 34%; }   /* 左中腹地 */
-  .zone-carmen     { top: 46%; left: 68%; }   /* 下移右放，與瑪麗徹底拉開距離 */
-  .zone-violetta   { top: 52%; left: 52%; }   /* 庭園中央 */
-  .zone-lucia      { top: 56%; left: 26%; }   /* 左側深處 */
-  .zone-amina      { top: 66%; left: 42%; }   /* 中央偏左下 */
-  .zone-nightqueen { top: 60%; left: 76%; }   /* 移至右側空曠區 */
-  .zone-cinderella { top: 74%; left: 62%; }   /* 右下腹地 */
-  .zone-zerbinetta { top: 26%; left: 24%; }   /* 左上，隱於北風神吐息下方 */
-  .zone-norma      { top: 78%; left: 36%; }   /* 右移，完美閃避左下角海怪 */
-  .zone-tosca      { top: 74%; left: 80%; }   /* 右下深處，懸於羅盤上方 */
-  .zone-marie      { top: 26%; left: 78%; }   /* 右上，輝映於太陽神面下方 */
+  .zone-prologue   { top: 22%; left: 50%; }   
+  .zone-ophelia    { top: 30%; left: 36%; }   
+  .zone-carmen     { top: 36%; left: 60%; }   
+  .zone-violetta   { top: 48%; left: 32%; }   
+  .zone-lucia      { top: 54%; left: 58%; }   
+  .zone-amina      { top: 68%; left: 36%; }   
+  .zone-nightqueen { top: 62%; left: 68%; }   
+  .zone-cinderella { top: 76%; left: 50%; }   
+  .zone-zerbinetta { top: 44%; left: 19%; }   
+  .zone-norma      { top: 78%; left: 24%; }   
+  .zone-tosca      { top: 80%; left: 70%; }   
+  .zone-marie      { top: 27%; left: 74%; }   
 
   /* ── 視圖 2：區域副本 (The Zone Showcase) ── */
   .zone-header { padding: 40px 80px 0 80px; max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
@@ -412,7 +410,7 @@
   }
 
   /* ══════════════════════════════════════
-     手機版統一響應式設計 (終極鎖定防崩潰版)
+     手機版統一響應式設計 (終極長卷軸無摩擦版)
   ══════════════════════════════════════ */
   @media (max-width: 900px) {
 
@@ -434,54 +432,55 @@
     /* ── World Lore ── */
     .world-lore { display: none; }
 
-    /* ── Garden Map（暴力鎖定快取與長寬比，絕對防禦崩潰）── */
+    /* ── Garden Map（降維打擊：解鎖為 9/24 垂直極長卷軸）── */
     .garden-map {
       width: 100% !important;
       height: auto !important;
-      aspect-ratio: 9/16 !important;
+      aspect-ratio: 9/24 !important; /* 解放高度，變為無盡的垂直卷軸 */
       margin: 0 0 32px 0 !important;
       border-radius: 0 !important;
-      background-image: url('garden-map.jpg?v=20260602_v2') !important;
-      background-size: 100% 100% !important; 
+      background-image: url('garden-map-long.jpg?v=20260602_v5') !important;
+      background-size: cover !important; 
       background-position: center top !important;
     }
     
-    /* 縮小節點基底，確保字級不互相壓疊 */
-    .map-node { transform: translate(-50%, -50%) scale(0.80) !important; }
-    .map-node:hover { transform: translate(-50%, -50%) scale(0.90) !important; }
-    .node-icon { width: 16px; height: 16px; margin-bottom: 6px; }
+    /* 恢復節點健康尺寸，因為有了極大空間，不需要再過度縮小 */
+    .map-node { transform: translate(-50%, -50%) scale(0.95) !important; }
+    .map-node:hover { transform: translate(-50%, -50%) scale(1.05) !important; }
+    .node-icon { width: 20px; height: 20px; margin-bottom: 8px; }
     
-    /* 強化字體光暈與實體底色遮罩，拔除濾鏡 */
     .node-title { 
-      font-size: 14px; 
+      font-size: 16px; 
       letter-spacing: 0.1em; 
       margin-bottom: 4px; 
       font-weight: 500; 
       text-shadow: 0 0 4px var(--paper), 0 0 10px var(--paper), 0 0 20px var(--paper);
     }
     .node-subtitle { 
-      font-size: 9px; 
+      font-size: 10px; 
       letter-spacing: 0.15em; 
-      padding: 3px 8px; 
+      padding: 4px 10px; 
       background: rgba(245, 240, 232, 0.95); 
       border: 0.5px solid rgba(184,149,106,0.2);
       box-shadow: 0 2px 5px rgba(26,22,18,0.05);
-      backdrop-filter: none; /* 手機端禁用以防效能卡頓 */
     }
 
-    /* 手機版節點座標（重新編排：完美的 S 型垂直向下探勘路線） */
-    .zone-prologue   { top: 12%; left: 50%; }
-    .zone-ophelia    { top: 22%; left: 28%; }
-    .zone-carmen     { top: 28%; left: 75%; }
-    .zone-violetta   { top: 38%; left: 50%; }
-    .zone-lucia      { top: 46%; left: 25%; }
-    .zone-amina      { top: 54%; left: 75%; }
-    .zone-nightqueen { top: 62%; left: 50%; }
-    .zone-cinderella { top: 70%; left: 25%; }
-    .zone-zerbinetta { top: 78%; left: 75%; }
-    .zone-norma      { top: 85%; left: 50%; }
-    .zone-tosca      { top: 92%; left: 25%; }
-    .zone-marie      { top: 95%; left: 75%; }
+    /* ══════════════════════════════════════
+       手機版節點座標（極長卷軸內的 S 型完美分佈）
+       從 8% 一路排到 90%，每個節點擁有絕對獨立的呼吸空間
+    ══════════════════════════════════════ */
+    .zone-prologue   { top: 8%;  left: 50%; }
+    .zone-ophelia    { top: 15%; left: 30%; } 
+    .zone-carmen     { top: 22%; left: 70%; } 
+    .zone-violetta   { top: 29%; left: 35%; }
+    .zone-lucia      { top: 36%; left: 65%; }
+    .zone-amina      { top: 43%; left: 30%; }
+    .zone-nightqueen { top: 50%; left: 70%; }
+    .zone-cinderella { top: 57%; left: 35%; }
+    .zone-zerbinetta { top: 64%; left: 65%; }
+    .zone-norma      { top: 71%; left: 30%; }
+    .zone-tosca      { top: 78%; left: 70%; }
+    .zone-marie      { top: 86%; left: 50%; } /* 完美收尾 */
 
     /* ── Zone Header ── */
     .zone-header { padding: 14px 20px; flex-direction: row; align-items: center; gap: 12px; }
@@ -884,49 +883,50 @@
       <p>Le Jardin de Xia Sheng est un projet de pâtisserie en douze chapitres. Chaque chapitre s'inspire du destin d'une héroïne d'opéra, distillant une proposition émotionnelle pour ensuite la transformer en une substance qui peut être touchée, goûtée et mémorisée. Il n'y a qu'un seul critère de sélection : leur relation au choix — celles qui tentent encore de faire des choix dans des situations extrêmes, et celles à qui même le droit de choisir a été retiré.</p>
       <p>En fin de compte, ce jardin immortel donnera naissance à son propre langage, vivant et respirant à l'infini.</p>
     </div>
-  <!-- 聯絡連結 -->
-  <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
-    <a href="mailto:shazensu@gmail.com" style="font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:0.35em; color:var(--gold); text-decoration:none; text-transform:uppercase;">聯絡 · Contact</a>
-    <p style="margin-top:10px; font-size:12px; color:var(--mist); line-height:1.9; letter-spacing:0.03em;">
-      <span class="lang-zh">歡迎合作洽詢、媒體採訪，或任何想說的話。</span>
-      <span class="lang-en">For collaborations, press inquiries, or anything you'd like to say.</span>
-      <span class="lang-jp">コラボレーション、取材のご依頼、またはご意見など、お気軽にどうぞ。</span>
-      <span class="lang-fr">Pour toute collaboration, demande presse, ou simplement pour échanger.</span>
-    </p>
-  </div>
 
-  <!-- C. 給夏生的信 -->
-  <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
-    <p class="lang-zh" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">給夏生的信</p>
-    <p class="lang-en" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">A Letter to Hsia Sheng</p>
-    <p class="lang-jp" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">夏生への手紙</p>
-    <p class="lang-fr" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">Une lettre à Xia Sheng</p>
-    <p style="font-size:13px; color:var(--mist); line-height:2; margin-bottom:24px;">
-      <span class="lang-zh">如果你也在某個故事裡看見了自己，歡迎寫信給我。</span>
-      <span class="lang-en">If you found yourself in one of these stories, I would love to hear from you.</span>
-      <span class="lang-jp">もしあなたがどこかの物語に自分を見たなら、ぜひ手紙を書いてください。</span>
-      <span class="lang-fr">Si vous vous êtes reconnu dans l'une de ces histoires, je serais touché de recevoir votre message.</span>
-    </p>
-    <form action="https://formspree.io/f/xpwzgqrk" method="POST" onsubmit="handleLetterSubmit(event, this)">
-      <input type="hidden" name="_subject" value="給夏生的信">
-      <textarea name="message" required rows="4" style="width:100%; background:transparent; border:0.5px solid var(--line); padding:12px; font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--ink); resize:none; outline:none; letter-spacing:0.03em; line-height:1.8; box-sizing:border-box;"></textarea>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <input type="email" name="email" placeholder="你的email（若希望我回信）" style="background:transparent; border:none; border-bottom:0.5px solid var(--line); padding:6px 0; font-family:'Cormorant Garamond',serif; font-size:12px; color:var(--mist); outline:none; width:60%; letter-spacing:0.03em;">
-        <button type="submit" style="background:none; border:0.5px solid var(--gold); color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:10px; letter-spacing:0.3em; padding:8px 20px; cursor:pointer; text-transform:uppercase; transition:0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--paper)'" onmouseout="this.style.background='none';this.style.color='var(--gold)'">
-          <span class="lang-zh">寄出</span>
-          <span class="lang-en">Send</span>
-          <span class="lang-jp">送る</span>
-          <span class="lang-fr">Envoyer</span>
-        </button>
-      </div>
-      <p class="form-success" style="display:none; font-size:12px; color:var(--mist); margin-top:12px; font-style:italic;">
-        <span class="lang-zh">信已送達。我會讀的。</span>
-        <span class="lang-en">Your letter has arrived. I will read it.</span>
-        <span class="lang-jp">手紙は届きました。必ず読みます。</span>
-        <span class="lang-fr">Votre lettre est arrivée. Je la lirai.</span>
+    <!-- 聯絡連結 -->
+    <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
+      <a href="mailto:shazensu@gmail.com" style="font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:0.35em; color:var(--gold); text-decoration:none; text-transform:uppercase;">聯絡 · Contact</a>
+      <p style="margin-top:10px; font-size:12px; color:var(--mist); line-height:1.9; letter-spacing:0.03em;">
+        <span class="lang-zh">歡迎合作洽詢、媒體採訪，或任何想說的話。</span>
+        <span class="lang-en">For collaborations, press inquiries, or anything you'd like to say.</span>
+        <span class="lang-jp">コラボレーション、取材のご依頼、またはご意見など、お気軽にどうぞ。</span>
+        <span class="lang-fr">Pour toute collaboration, demande presse, ou simplement pour échanger.</span>
       </p>
-    </form>
-  </div>
+    </div>
+
+    <!-- C. 給夏生的信 (保留主理人原本架構) -->
+    <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
+      <p class="lang-zh" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">給夏生的信</p>
+      <p class="lang-en" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">A Letter to Hsia Sheng</p>
+      <p class="lang-jp" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">夏生への手紙</p>
+      <p class="lang-fr" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">Une lettre à Xia Sheng</p>
+      <p style="font-size:13px; color:var(--mist); line-height:2; margin-bottom:24px;">
+        <span class="lang-zh">如果你也在某個故事裡看見了自己，歡迎寫信給我。</span>
+        <span class="lang-en">If you found yourself in one of these stories, I would love to hear from you.</span>
+        <span class="lang-jp">もしあなたがどこかの物語に自分を見たなら、ぜひ手紙を書いてください。</span>
+        <span class="lang-fr">Si vous vous êtes reconnu dans l'une de ces histoires, je serais touché de recevoir votre message.</span>
+      </p>
+      <form action="https://formspree.io/f/xpwzgqrk" method="POST" onsubmit="handleLetterSubmit(event, this)">
+        <input type="hidden" name="_subject" value="給夏生的信">
+        <textarea name="message" required rows="4" style="width:100%; background:transparent; border:0.5px solid var(--line); padding:12px; font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--ink); resize:none; outline:none; letter-spacing:0.03em; line-height:1.8; box-sizing:border-box;"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <input type="email" name="email" placeholder="你的email（若希望我回信）" style="background:transparent; border:none; border-bottom:0.5px solid var(--line); padding:6px 0; font-family:'Cormorant Garamond',serif; font-size:12px; color:var(--mist); outline:none; width:60%; letter-spacing:0.03em;">
+          <button type="submit" style="background:none; border:0.5px solid var(--gold); color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:10px; letter-spacing:0.3em; padding:8px 20px; cursor:pointer; text-transform:uppercase; transition:0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--paper)'" onmouseout="this.style.background='none';this.style.color='var(--gold)'">
+            <span class="lang-zh">寄出</span>
+            <span class="lang-en">Send</span>
+            <span class="lang-jp">送る</span>
+            <span class="lang-fr">Envoyer</span>
+          </button>
+        </div>
+        <p class="form-success" style="display:none; font-size:12px; color:var(--mist); margin-top:12px; font-style:italic;">
+          <span class="lang-zh">信已送達。我會讀的。</span>
+          <span class="lang-en">Your letter has arrived. I will read it.</span>
+          <span class="lang-jp">手紙は届きました。必ず読みます。</span>
+          <span class="lang-fr">Votre lettre est arrivée. Je la lirai.</span>
+        </p>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -948,7 +948,6 @@
   
   <div class="timeline">
     
-    <!-- 未登場角色名單 -->
     <div class="timeline-item upcoming" style="margin-top: 100px;">
       <div class="timeline-dot"></div>
       <div class="timeline-number">第二章 · Chapter II</div>
@@ -1065,7 +1064,7 @@
 </div>
 
 <script>
-// 完整四語資料庫
+// 完整四語資料庫 (100% 實體影像對齊)
 const prologueDB = [
   {
     images: ["prologue-1.jpg"],

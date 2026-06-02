@@ -150,53 +150,63 @@
   .world-desc { font-size: 15px; color: var(--mist); line-height: 2.2; margin-bottom: 20px; }
   .world-quote { font-size: 16px; font-style: italic; color: var(--gold); margin-top: 40px; }
 
+  /* ══════════════════════════════════════
+     核心重構：全靜態底圖掛載與 Aspect Ratio 控制
+  ══════════════════════════════════════ */
   .garden-map {
-    position: relative; max-width: 1100px; height: 850px; margin: 0 auto 100px auto;
-    border: 1px solid var(--line); background: var(--paper); overflow: hidden;
+    position: relative; 
+    width: 100%;
+    max-width: 1100px; 
+    aspect-ratio: 16/10; /* 強制鎖定桌機版比例，確保節點精準定位 */
+    margin: 0 auto 100px auto;
+    border: 1px solid var(--line); 
+    background-color: var(--paper); 
+    overflow: hidden;
+    background-image: url('garden-map-desktop.jpg'); /* 桌機版橫圖 */
+    background-size: 100% 100%; /* 完整貼合不裁切邊框 */
+    background-position: center;
+    background-repeat: no-repeat;
     box-shadow: inset 0 0 120px rgba(184,149,106,0.08);
   }
   
-  /* 極度繁複的地景 SVG */
-  .map-landscape { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
-  
-  /* 地圖節點 (Zones) */
-  .map-node { position: absolute; text-align: center; cursor: pointer; z-index: 10; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); transform: translate(-50%, -50%); }
-  .map-node:hover { transform: translate(-50%, -50%) scale(1.15); }
+  /* 地圖節點 (Zones) - 縮小桌機版節點比例，解決疊壓問題 */
+  .map-node { position: absolute; text-align: center; cursor: pointer; z-index: 10; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); transform: translate(-50%, -50%) scale(0.85); }
+  .map-node:hover { transform: translate(-50%, -50%) scale(1.0); }
   .map-node.locked { cursor: not-allowed; opacity: 0.5; filter: grayscale(1); }
-  .map-node.locked:hover { transform: translate(-50%, -50%); }
+  .map-node.locked:hover { transform: translate(-50%, -50%) scale(0.85); }
 
   /* 地圖節點的羅盤標記 */
   .node-icon { 
-    width: 16px; height: 16px; background: var(--paper); border: 1.5px solid var(--gold); 
-    transform: rotate(45deg); margin: 0 auto 12px auto; transition: 0.3s; 
+    width: 14px; height: 14px; background: var(--paper); border: 1.5px solid var(--gold); 
+    transform: rotate(45deg); margin: 0 auto 8px auto; transition: 0.3s; 
     box-shadow: 0 0 10px rgba(184,149,106,0); position: relative;
   }
   .node-icon::after {
-    content: ''; position: absolute; top: 3px; left: 3px; right: 3px; bottom: 3px;
+    content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px;
     border: 0.5px solid var(--gold); opacity: 0.5;
   }
   .map-node:hover:not(.locked) .node-icon { background: var(--gold); box-shadow: 0 0 20px rgba(184,149,106,0.8); border-width: 2px; }
   .locked .node-icon { border-color: var(--mist); }
   .locked .node-icon::after { border-color: var(--mist); }
   
-  .node-title { font-size: 18px; letter-spacing: 0.1em; color: var(--ink); margin-bottom: 4px; white-space: nowrap; font-weight: 400; text-shadow: 0 2px 5px var(--paper), 0 -2px 5px var(--paper); }
-  .node-subtitle { font-size: 10px; letter-spacing: 0.2em; color: var(--mist); text-transform: uppercase; white-space: nowrap; background: rgba(245,240,232,0.8); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--line); }
+  .node-title { font-size: 16px; letter-spacing: 0.1em; color: var(--ink); margin-bottom: 4px; white-space: nowrap; font-weight: 400; text-shadow: 0 2px 5px var(--paper), 0 -2px 5px var(--paper); }
+  .node-subtitle { font-size: 9px; letter-spacing: 0.2em; color: var(--mist); text-transform: uppercase; white-space: nowrap; background: rgba(245,240,232,0.8); padding: 2px 6px; border-radius: 4px; border: 0.5px solid var(--line); }
 
   /* 夏生的庭園——節點坐標（桌機版，橫幅16:10）
-     地圖580px高，可用中央區域約22%-78%橫、15%-88%縱
-     北風神左上、太陽右上、海怪左下(22%,65%)、羅盤右下(78%,63%) */
-  .zone-prologue   { top: 22%; left: 50%; }   /* 序章：頂部中央 */
-  .zone-ophelia    { top: 38%; left: 34%; }   /* Ch1 水畔：左中上 */
-  .zone-carmen     { top: 35%; left: 65%; }   /* Ch2 華麗廢墟：右中上 */
-  .zone-violetta   { top: 52%; left: 57%; }   /* Ch3 交際沙龍：中右 */
-  .zone-lucia      { top: 55%; left: 32%; }   /* Ch4 乾涸水泉：中左 */
-  .zone-amina      { top: 66%; left: 44%; }   /* Ch5 永夜教堂：中央下 */
-  .zone-nightqueen { top: 62%; left: 68%; }   /* Ch6 封印之心：右下 */
-  .zone-cinderella { top: 74%; left: 60%; }   /* Ch7 風庭：右下深 */
-  .zone-zerbinetta { top: 47%; left: 24%; }   /* Ch8 碎裂光庭：左中 */
-  .zone-norma      { top: 72%; left: 28%; }   /* Ch9 不滅之火：左下深 */
-  .zone-tosca      { top: 80%; left: 50%; }   /* Ch10 靜默高塔：中央最深 */
-  .zone-marie      { top: 28%; left: 62%; }   /* Ch11 檸檬樹下：右上 */
+     調整邏輯：創造從庭園入口（序章）逐步深入花園腹地（瑪麗）的次序感。
+     由上往下，呈現S型或之字型路徑，避免橫向與垂直方向的擁擠與疊加。 */
+  .zone-prologue   { top: 22%; left: 50%; }   /* 序章：入口居中 */
+  .zone-ophelia    { top: 32%; left: 36%; }   /* Ch1：偏左上 */
+  .zone-carmen     { top: 38%; left: 60%; }   /* Ch2：偏右上 */
+  .zone-violetta   { top: 48%; left: 32%; }   /* Ch3：偏左中 */
+  .zone-lucia      { top: 52%; left: 56%; }   /* Ch4：偏右中 */
+  .zone-amina      { top: 64%; left: 34%; }   /* Ch5：偏左下 */
+  .zone-nightqueen { top: 62%; left: 68%; }   /* Ch6：偏右下 */
+  .zone-cinderella { top: 76%; left: 50%; }   /* Ch7：正下深處 */
+  .zone-zerbinetta { top: 42%; left: 18%; }   /* Ch8：極左 */
+  .zone-norma      { top: 78%; left: 24%; }   /* Ch9：左下深處 */
+  .zone-tosca      { top: 82%; left: 74%; }   /* Ch10：右下極深 */
+  .zone-marie      { top: 24%; left: 76%; }   /* Ch11：右上深處 (遠離Ch2卡門) */
 
   /* ── 視圖 2：區域副本 (The Zone Showcase) ── */
   .zone-header { padding: 40px 80px 0 80px; max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
@@ -251,28 +261,13 @@
   .modal-img2-wrap img { width:100%; height:100%; object-fit:cover; }
   .modal-text { padding:80px 60px 100px 60px; display:flex; flex-direction:column; justify-content:center; min-height:100vh; }
 
-  /* ── 響應式 (手機端) ── */
-  @media (max-width: 900px) {
-    .garden-map { height: 650px; margin: 0 10px 60px 10px; }
-    .showcase-container { grid-template-columns: 1fr; gap: 24px; padding: 20px 20px 80px 20px; }
-    .zone-header { padding: 20px; flex-direction: column; align-items: flex-start; gap: 20px; }
-    .zone-title-display { text-align: left; }
-    .showcase-visual { position: relative; top: 0; aspect-ratio: 1; }
-    
-
-  }
   .quote-section { text-align: center; padding: 100px 80px; border-top: 0.5px solid var(--line); border-bottom: 0.5px solid var(--line); background: rgba(26,22,18,0.02); }
   .quote-text { font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; font-style: italic; line-height: 1.8; max-width: 700px; margin: 0 auto 24px; letter-spacing: 0.05em; }
   .quote-source { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
   footer { padding: 60px 80px; display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid var(--line); }
   .footer-brand { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--mist); }
 
-
-
-
-
-
-/* ── HERO ── */
+  /* ── HERO ── */
   .hero { min-height: 70vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
   .hero-image { position: relative; overflow: hidden; background: #0d1a1f; }
   .hero-image img { width: 100%; height: 100%; object-fit: cover; object-position: center center; opacity: 0.85; display: block; }
@@ -313,91 +308,10 @@
   .timeline-item.active .timeline-dot { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(184,149,106,0.15); }
   
   .timeline-number { font-size: 10px; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 4px; text-transform: uppercase; }
-  .timeline-name { font-size: 22px; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .timeline-name-zh { font-size: 22px; font-weight: 300; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .timeline-name-en { font-size: 14px; font-weight: 300; letter-spacing: 0.05em; color: var(--mist); margin-bottom: 10px; }
   .timeline-status { display: inline-block; font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; padding: 3px 10px; border: 0.5px solid var(--gold); color: var(--gold); }
   .timeline-desc { margin-top: 12px; font-size: 14px; color: var(--mist); line-height: 1.8; max-width: 480px; }
-
-  /* ── GALLERY SHOWCASE LAYOUT (核心重構) ── */
-  .showcase-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-top: 60px;
-    align-items: start;
-  }
-
-  /* 左側大圖區 */
-  .showcase-visual {
-    position: sticky;
-    top: 100px;
-    width: 100%;
-    aspect-ratio: 4/5;
-    background: #e9e4dc;
-    border: 1px solid var(--line);
-    overflow: hidden;
-    box-shadow: 0 20px 50px rgba(26,22,18,0.08);
-  }
-  .showcase-visual img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* 右側敘事與導航區 */
-  .showcase-content {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 40px;
-  }
-
-  /* 縮圖矩陣 */
-  .showcase-nav-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 40px;
-  }
-  .thumb-node {
-    aspect-ratio: 1;
-    overflow: hidden;
-    cursor: pointer;
-    border: 1px solid var(--line);
-    opacity: 0.6;
-    transition: all 0.4s ease;
-    filter: grayscale(80%);
-  }
-  .thumb-node img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .thumb-node:hover, .thumb-node.active {
-    opacity: 1;
-    filter: grayscale(0%);
-    border-color: var(--gold);
-    box-shadow: 0 4px 15px rgba(184,149,106,0.2);
-  }
-
-  /* 文字資訊區 */
-  .showcase-text-panel {
-    background: rgba(26,22,18,0.02);
-    border-top: 1px solid var(--gold);
-    padding: 32px 0 0 0;
-  }
-  .s-title { font-size: 26px; font-weight: 300; letter-spacing: 0.05em; margin-bottom: 8px; color: var(--ink); }
-  .s-flavor { font-size: 11px; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 32px; }
-  .s-poem { font-size: 14px; font-style: italic; color: var(--mist); line-height: 2.2; margin-bottom: 32px; padding-left: 16px; border-left: 1px solid var(--gold); }
-  .s-desc { font-size: 14px; line-height: 2; color: var(--ink); }
-
-  /* ── QUOTE & FOOTER ── */
-  .quote-section { text-align: center; padding: 100px 80px; border-top: 0.5px solid var(--line); border-bottom: 0.5px solid var(--line); background: rgba(26,22,18,0.02); }
-  .quote-text { font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; font-style: italic; line-height: 1.8; max-width: 700px; margin: 0 auto 24px; letter-spacing: 0.05em; }
-  .quote-source { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
-  footer { padding: 60px 80px; display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid var(--line); }
-  .footer-brand { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--mist); }
-
-  
 
   /* ── 作品清單格 ── */
   #dessert-grid {
@@ -466,13 +380,6 @@
     letter-spacing: 0.3em;
     color: var(--gold);
   }
-  @media (max-width: 900px) {
-    #dessert-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      padding: 0 12px !important;
-      gap: 2px;
-    }
-  }
 
   /* ══════════════════════════════════════
      手機版統一響應式設計
@@ -497,33 +404,39 @@
     /* ── World Lore（隱藏，hero已有說明） ── */
     .world-lore { display: none; }
 
-    /* ── Garden Map（手機版：直幅圖9:11）── */
+    /* ── Garden Map（手機版：修改為更狹長的 9:16 比例）── */
+    /* 透過將高寬比拉長，放大整張地圖在手機上的物理尺寸，釋放節點排佈空間 */
     .garden-map {
-      height: 520px;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 9/16 !important; /* 強制覆蓋為長直幅比例，確保節點不再擁擠 */
       margin: 0 0 32px 0;
       border-radius: 0;
       background-image: url('garden-map.jpg') !important;
-      background-size: cover !important;
-      background-position: center top !important;
+      background-size: 100% 100% !important; /* 確保長圖完整延展不裁切 */
+      background-position: center !important;
     }
-    .map-node { transform: translate(-50%, -50%) scale(0.80); }
-    .node-icon { width: 38px; height: 38px; }
-    .node-title { font-size: 10px; letter-spacing: 0.06em; margin-top: 5px; }
-    .node-subtitle { font-size: 7px; letter-spacing: 0.06em; margin-top: 2px; }
-    /* 手機版節點座標（直幅圖，北風神左上、太陽右上、海怪左下、羅盤右下）
-       可用橫向：22%-78%，縱向：28%-78% */
-    .zone-prologue   { top: 18%; left: 50%; }
-    .zone-ophelia    { top: 33%; left: 32%; }
-    .zone-carmen     { top: 32%; left: 68%; }
-    .zone-violetta   { top: 46%; left: 60%; }
-    .zone-lucia      { top: 48%; left: 30%; }
-    .zone-amina      { top: 58%; left: 46%; }
-    .zone-nightqueen { top: 56%; left: 68%; }
-    .zone-cinderella { top: 68%; left: 60%; }
-    .zone-zerbinetta { top: 42%; left: 24%; }
-    .zone-norma      { top: 66%; left: 28%; }
-    .zone-tosca      { top: 75%; left: 50%; }
-    .zone-marie      { top: 25%; left: 66%; }
+    
+    /* 放大節點整體尺寸，改善手機端閱讀性 */
+    .map-node { transform: translate(-50%, -50%) scale(1.0); }
+    .node-icon { width: 20px; height: 20px; }
+    .node-title { font-size: 14px; letter-spacing: 0.08em; margin-top: 6px; font-weight: 500; }
+    .node-subtitle { font-size: 9px; letter-spacing: 0.1em; margin-top: 3px; padding: 3px 8px; }
+
+    /* 手機版節點座標（9:16 直幅長圖）
+       利用拉長的縱向空間 (15% ~ 85%) 創造清楚的 S 型路徑次序感 */
+    .zone-prologue   { top: 15%; left: 50%; }   /* 序章：頂部中心 */
+    .zone-ophelia    { top: 24%; left: 30%; }   /* Ch1：左上 */
+    .zone-carmen     { top: 26%; left: 72%; }   /* Ch2：右上 */
+    .zone-violetta   { top: 38%; left: 65%; }   /* Ch3：右偏中 */
+    .zone-lucia      { top: 40%; left: 28%; }   /* Ch4：左偏中 */
+    .zone-amina      { top: 52%; left: 35%; }   /* Ch5：左下中 */
+    .zone-nightqueen { top: 54%; left: 70%; }   /* Ch6：右下中 */
+    .zone-cinderella { top: 66%; left: 62%; }   /* Ch7：右下深處 */
+    .zone-zerbinetta { top: 68%; left: 25%; }   /* Ch8：左下深處 */
+    .zone-norma      { top: 80%; left: 30%; }   /* Ch9：極左下 */
+    .zone-tosca      { top: 85%; left: 50%; }   /* Ch10：正底深淵 */
+    .zone-marie      { top: 16%; left: 78%; }   /* Ch11：極右上 (遠離入口區) */
 
     /* ── Zone Header ── */
     .zone-header { padding: 14px 20px; flex-direction: row; align-items: center; gap: 12px; }
@@ -543,16 +456,19 @@
     .dessert-card-num { font-size: 8px; }
 
     /* ── Modal ── */
-    .modal-inner { grid-template-columns: 1fr !important; min-height: auto !important; }
-    .modal-visual { position: relative !important; width: 100% !important; background: var(--paper); line-height: 0; overflow: visible !important; height: auto !important; }
-    .modal-visual > img { width: 100% !important; height: auto !important; display: block !important; object-fit: unset !important; margin: 0 !important; padding: 0 !important; }
-    .modal-text { padding: 28px 24px 60px !important; min-height: auto !important; }
+    .modal-inner { display: flex !important; flex-direction: column !important; min-height: auto !important; }
+    .modal-visual { position: relative !important; width: 100% !important; height: 52vh !important; overflow: hidden !important; background: #e9e4dc; line-height: 0; }
+    .modal-visual > img { width: 100% !important; height: 100% !important; display: block !important; object-fit: cover !important; margin: 0 !important; padding: 0 !important; }
+    .modal-text { padding: 36px 24px 60px !important; min-height: auto !important; display: flex !important; flex-direction: column !important; }
+    
+    #modal-img2-wrap { position: relative !important; width: 100% !important; height: auto !important; bottom: auto !important; right: auto !important; border: none !important; margin-top: 32px !important; display: block !important; order: 999 !important; box-shadow: 0 10px 30px rgba(26,22,18,0.05); }
+    #modal-img2-wrap img { width: 100% !important; height: auto !important; display: block !important; object-fit: unset !important; }
+
     #modal-title { font-size: clamp(22px, 6vw, 30px) !important; margin-bottom: 8px; }
     #modal-flavor { font-size: 11px !important; margin-bottom: 20px; }
     #modal-poem { font-size: 13px; line-height: 2; margin-bottom: 20px; padding-left: 14px; }
     #modal-desc { font-size: 13px; line-height: 1.9; }
-    #modal-img2-wrap { position: relative !important; width: 100% !important; height: auto !important; bottom: auto !important; right: auto !important; border: none !important; border-top: 2px solid var(--paper) !important; margin-top: 0 !important; display: block !important; }
-    #modal-img2-wrap img { width: 100% !important; height: auto !important; display: block !important; object-fit: unset !important; }
+
     .modal-nav { width: 36px; height: 36px; font-size: 16px; }
     .modal-nav.prev { left: 10px; top: 50%; transform: translateY(-50%); }
     .modal-nav.next { right: 10px; top: 50%; transform: translateY(-50%); }
@@ -575,9 +491,10 @@
     .divider { padding: 0 28px; }
     .timeline { padding-left: 24px; }
     .timeline-dot { left: -28px; }
-    .timeline-name { font-size: 17px; }
     .timeline-number { font-size: 8px; }
     .timeline-status { font-size: 8px; padding: 3px 8px; }
+    .timeline-name-zh { font-size: 17px; font-weight: 300; letter-spacing: 0.1em; margin-top: 2px; }
+    .timeline-name-en { font-size: 14px; font-weight: 300; letter-spacing: 0.05em; color: var(--mist); margin-bottom: 10px; }
 
     /* ── Footer ── */
     footer { padding: 36px 28px; flex-direction: column; gap: 12px; text-align: center; }
@@ -585,7 +502,7 @@
     .footer-note { font-size: 10px; }
   }
 
-</style></style>
+</style>
 </head>
 <body data-lang="zh">
 
@@ -651,117 +568,11 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════
+       底圖掛載與節點 (徹底移除舊版SVG)
+  ══════════════════════════════════════ -->
   <div class="garden-map">
     
-    <!-- 節點路徑SVG疊層 -->
-    <svg class="map-landscape" viewBox="0 0 1100 850" preserveAspectRatio="xMidYMid slice" style="z-index:1;">
-      <defs>
-        <!-- 基礎紋理：經緯度與微米網格 -->
-        <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(184,149,106,0.08)" stroke-width="0.5"/>
-        </pattern>
-        <pattern id="sub-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(184,149,106,0.03)" stroke-width="0.5"/>
-        </pattern>
-        <pattern id="stars" width="300" height="300" patternUnits="userSpaceOnUse">
-          <circle cx="50" cy="50" r="0.8" fill="rgba(26,22,18,0.2)"/>
-          <circle cx="200" cy="120" r="0.5" fill="rgba(26,22,18,0.2)"/>
-          <circle cx="120" cy="250" r="1.2" fill="rgba(184,149,106,0.3)"/>
-        </pattern>
-        
-        <!-- 環狀文字路徑 -->
-        <path id="textPath-outer" d="M 550,150 A 275,275 0 1,1 549.9,150" />
-        <path id="textPath-inner" d="M 550,230 A 195,195 0 1,1 549.9,230" />
-      </defs>
-      
-      <rect width="100%" height="100%" fill="url(#sub-grid)" />
-      <rect width="100%" height="100%" fill="url(#grid)" />
-      <rect width="100%" height="100%" fill="url(#stars)" />
-
-      <!-- 核心神聖幾何學 -->
-      <g transform="translate(550, 425)" stroke="rgba(184,149,106,0.12)" fill="none" stroke-width="0.5">
-        <circle r="200" stroke-width="0.2"/>
-        <circle r="275" stroke-dasharray="4 8" stroke-width="0.8"/>
-        <circle r="350" stroke-width="0.1"/>
-        <circle r="425" stroke-dasharray="1 4" stroke-width="0.5"/>
-        <line x1="-600" y1="0" x2="600" y2="0" />
-        <line x1="0" y1="-600" x2="0" y2="600" />
-        <line x1="-500" y1="-500" x2="500" y2="500" stroke-dasharray="2 6" />
-        <line x1="-500" y1="500" x2="500" y2="-500" stroke-dasharray="2 6" />
-      </g>
-
-      <text font-size="8" fill="rgba(184,149,106,0.25)" letter-spacing="4" font-family="'Cormorant Garamond', serif">
-        <textPath href="#textPath-outer" startOffset="5%">
-          SIC ITUR AD ASTRA · PER ASPERA AD ASTRA · IGNIS NATURA RENOVATUR INTEGRA · OMNIA AB UNO ET IN UNUM OMNIA
-        </textPath>
-      </text>
-      <text font-size="7" fill="rgba(26,22,18,0.2)" letter-spacing="6" font-family="'Cormorant Garamond', serif">
-        <textPath href="#textPath-inner" startOffset="20%">
-          FATUM ET VOLUNTAS · TERRA INCOGNITA · HORTUS AETERNUS
-        </textPath>
-      </text>
-
-      <g transform="translate(250, 200)" stroke="rgba(184,149,106,0.1)" stroke-width="0.4">
-        <g id="wind-rose">
-          <line x1="-1500" y1="0" x2="1500" y2="0"/><line x1="0" y1="-1500" x2="0" y2="1500"/>
-          <line x1="-1500" y1="-1500" x2="1500" y2="1500"/><line x1="-1500" y1="1500" x2="1500" y2="-1500"/>
-          <line x1="-1500" y1="-750" x2="1500" y2="750"/><line x1="-1500" y1="750" x2="1500" y2="-750"/>
-          <line x1="-750" y1="-1500" x2="750" y2="1500"/><line x1="-750" y1="1500" x2="750" y2="-1500"/>
-        </g>
-        <polygon points="0,-60 10,-15 60,0 10,15 0,60 -10,15 -60,0 -10,-15" fill="rgba(184,149,106,0.03)" stroke="rgba(184,149,106,0.3)"/>
-        <circle r="40" fill="none" stroke-width="0.8" stroke-dasharray="2 4" stroke="rgba(184,149,106,0.2)"/>
-      </g>
-
-      <g transform="translate(850, 650)" stroke="rgba(184,149,106,0.1)" stroke-width="0.3">
-        <use href="#wind-rose" />
-        <polygon points="0,-80 15,-20 80,0 15,20 0,80 -15,20 -80,0 -15,-20" fill="rgba(26,22,18,0.02)" stroke="rgba(184,149,106,0.25)"/>
-        <circle r="55" fill="none" stroke-width="0.5" stroke-dasharray="1 6"/>
-      </g>
-
-      <g transform="translate(150, 700)" stroke="rgba(184,149,106,0.08)" stroke-width="0.2">
-        <use href="#wind-rose" />
-        <circle r="100" fill="none" stroke-width="0.3" stroke-dasharray="4 8"/>
-      </g>
-
-      <g stroke="rgba(184,149,106,0.25)" stroke-width="0.4" fill="none">
-        <path d="M-100,250 C 150,100 400,450 700,150 S 1000,200 1300,300" />
-        <path d="M-100,270 C 150,120 400,470 700,170 S 1000,220 1300,320" stroke-width="0.2"/>
-        <path d="M-100,290 C 150,140 400,490 700,190 S 1000,240 1300,340" />
-        <path d="M-100,310 C 150,160 400,510 700,210 S 1000,260 1300,360" stroke-width="0.1"/>
-        <path d="M-100,330 C 150,180 400,530 700,230 S 1000,280 1300,380" stroke-width="0.1"/>
-      </g>
-
-      <g transform="translate(242, 408)" stroke="rgba(138,130,120,0.3)" stroke-width="0.5" fill="none">
-        <circle r="40" />
-        <circle r="55" stroke-width="0.2" />
-        <circle r="70" stroke-dasharray="2 4" />
-        <circle r="95" stroke-width="0.2" />
-        <circle r="130" stroke-dasharray="1 6" />
-        <circle r="190" stroke-dasharray="1 10" stroke-width="0.3" />
-        <circle r="260" stroke-dasharray="1 15" stroke-width="0.1" />
-        <path d="M -200,50 Q 0,-100 150,100 T 450,200" stroke="rgba(138,130,120,0.15)"/>
-        <path d="M -220,70 Q 0,-80 150,120 T 450,220" stroke="rgba(138,130,120,0.1)"/>
-      </g>
-
-      <g transform="translate(858, 663)" stroke="rgba(26,22,18,0.2)" stroke-width="0.5" fill="none">
-        <polygon points="-50,-80 20,-50 -20,20 -90,-20" stroke-dasharray="3 3"/>
-        <polygon points="-70,-100 40,-40 -10,50 -110,-10" stroke-width="0.2"/>
-        <polygon points="-30,-120 60,-60 10,70 -130,-30" stroke-width="0.1"/>
-        <path d="M -200,200 L -50,-50 L 100,100" stroke-width="1.2"/>
-        <path d="M -150,200 L -50,-50 L 50,100" stroke-width="0.3"/>
-        <path d="M -250,200 L -50,-50 L 150,100" stroke-dasharray="2 5"/>
-        <circle r="120" stroke="rgba(184,149,106,0.25)"/>
-      </g>
-
-      <g stroke="rgba(26,22,18,0.25)" stroke-width="0.4" fill="rgba(184,149,106,0.6)">
-        <circle cx="450" cy="200" r="2"/><circle cx="480" cy="160" r="1.5"/><circle cx="530" cy="180" r="2.5"/><circle cx="580" cy="140" r="1"/>
-        <path d="M 450,200 L 480,160 L 530,180 L 580,140" fill="none"/>
-        <circle cx="800" cy="350" r="2"/><circle cx="850" cy="320" r="1"/><circle cx="880" cy="380" r="1.5"/>
-        <path d="M 800,350 L 850,320 L 880,380" fill="none"/>
-      </g>
-
-    </svg>
-
     <!-- 節點 0：序章 -->
     <div class="map-node zone-prologue" onclick="enterZone('prologue')">
       <div class="node-icon"></div>
@@ -923,11 +734,6 @@
 </div>
 
 <!-- ========================================== -->
-<!-- 儀式過渡艙：奧菲莉亞專屬影音轉場 -->
-<!-- ========================================== -->
-
-
-<!-- ========================================== -->
 <!-- 視圖 2：區域副本 (The Zone Showcase) -->
 <!-- ========================================== -->
 <div id="view-zone" class="view-container">
@@ -1036,49 +842,50 @@
       <p>Le Jardin de Xia Sheng est un projet de pâtisserie en douze chapitres. Chaque chapitre s'inspire du destin d'une héroïne d'opéra, distillant une proposition émotionnelle pour ensuite la transformer en une substance qui peut être touchée, goûtée et mémorisée. Il n'y a qu'un seul critère de sélection : leur relation au choix — celles qui tentent encore de faire des choix dans des situations extrêmes, et celles à qui même le droit de choisir a été retiré.</p>
       <p>En fin de compte, ce jardin immortel donnera naissance à son propre langage, vivant et respirant à l'infini.</p>
     </div>
-  <!-- 聯絡連結 -->
-  <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
-    <a href="mailto:shazensu@gmail.com" style="font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:0.35em; color:var(--gold); text-decoration:none; text-transform:uppercase;">聯絡 · Contact</a>
-    <p style="margin-top:10px; font-size:12px; color:var(--mist); line-height:1.9; letter-spacing:0.03em;">
-      <span class="lang-zh">歡迎合作洽詢、媒體採訪，或任何想說的話。</span>
-      <span class="lang-en">For collaborations, press inquiries, or anything you'd like to say.</span>
-      <span class="lang-jp">コラボレーション、取材のご依頼、またはご意見など、お気軽にどうぞ。</span>
-      <span class="lang-fr">Pour toute collaboration, demande presse, ou simplement pour échanger.</span>
-    </p>
-  </div>
 
-  <!-- C. 給夏生的信 -->
-  <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
-    <p class="lang-zh" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">給夏生的信</p>
-    <p class="lang-en" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">A Letter to Hsia Sheng</p>
-    <p class="lang-jp" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">夏生への手紙</p>
-    <p class="lang-fr" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">Une lettre à Xia Sheng</p>
-    <p style="font-size:13px; color:var(--mist); line-height:2; margin-bottom:24px;">
-      <span class="lang-zh">如果你也在某個故事裡看見了自己，歡迎寫信給我。</span>
-      <span class="lang-en">If you found yourself in one of these stories, I would love to hear from you.</span>
-      <span class="lang-jp">もしあなたがどこかの物語に自分を見たなら、ぜひ手紙を書いてください。</span>
-      <span class="lang-fr">Si vous vous êtes reconnu dans l'une de ces histoires, je serais touché de recevoir votre message.</span>
-    </p>
-    <form action="https://formspree.io/f/xpwzgqrk" method="POST" onsubmit="handleLetterSubmit(event, this)">
-      <input type="hidden" name="_subject" value="給夏生的信">
-      <textarea name="message" required rows="4" style="width:100%; background:transparent; border:0.5px solid var(--line); padding:12px; font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--ink); resize:none; outline:none; letter-spacing:0.03em; line-height:1.8; box-sizing:border-box;"></textarea>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
-        <input type="email" name="email" placeholder="你的email（若希望我回信）" style="background:transparent; border:none; border-bottom:0.5px solid var(--line); padding:6px 0; font-family:'Cormorant Garamond',serif; font-size:12px; color:var(--mist); outline:none; width:60%; letter-spacing:0.03em;">
-        <button type="submit" style="background:none; border:0.5px solid var(--gold); color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:10px; letter-spacing:0.3em; padding:8px 20px; cursor:pointer; text-transform:uppercase; transition:0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--paper)'" onmouseout="this.style.background='none';this.style.color='var(--gold)'">
-          <span class="lang-zh">寄出</span>
-          <span class="lang-en">Send</span>
-          <span class="lang-jp">送る</span>
-          <span class="lang-fr">Envoyer</span>
-        </button>
-      </div>
-      <p class="form-success" style="display:none; font-size:12px; color:var(--mist); margin-top:12px; font-style:italic;">
-        <span class="lang-zh">信已送達。我會讀的。</span>
-        <span class="lang-en">Your letter has arrived. I will read it.</span>
-        <span class="lang-jp">手紙は届きました。必ず読みます。</span>
-        <span class="lang-fr">Votre lettre est arrivée. Je la lirai.</span>
+    <!-- 聯絡連結 -->
+    <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
+      <a href="mailto:shazensu@gmail.com" style="font-family:'Cormorant Garamond',serif; font-size:11px; letter-spacing:0.35em; color:var(--gold); text-decoration:none; text-transform:uppercase;">聯絡 · Contact</a>
+      <p style="margin-top:10px; font-size:12px; color:var(--mist); line-height:1.9; letter-spacing:0.03em;">
+        <span class="lang-zh">歡迎合作洽詢、媒體採訪，或任何想說的話。</span>
+        <span class="lang-en">For collaborations, press inquiries, or anything you'd like to say.</span>
+        <span class="lang-jp">コラボレーション、取材のご依頼、またはご意見など、お気軽にどうぞ。</span>
+        <span class="lang-fr">Pour toute collaboration, demande presse, ou simplement pour échanger.</span>
       </p>
-    </form>
-  </div>
+    </div>
+
+    <!-- C. 給夏生的信 -->
+    <div style="margin-top:48px; padding-top:40px; border-top:0.5px solid var(--line); max-width:480px;">
+      <p class="lang-zh" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">給夏生的信</p>
+      <p class="lang-en" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">A Letter to Hsia Sheng</p>
+      <p class="lang-jp" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">夏生への手紙</p>
+      <p class="lang-fr" style="font-size:10px; letter-spacing:0.3em; color:var(--gold); margin-bottom:16px; text-transform:uppercase;">Une lettre à Xia Sheng</p>
+      <p style="font-size:13px; color:var(--mist); line-height:2; margin-bottom:24px;">
+        <span class="lang-zh">如果你也在某個故事裡看見了自己，歡迎寫信給我。</span>
+        <span class="lang-en">If you found yourself in one of these stories, I would love to hear from you.</span>
+        <span class="lang-jp">もしあなたがどこかの物語に自分を見たなら、ぜひ手紙を書いてください。</span>
+        <span class="lang-fr">Si vous vous êtes reconnu dans l'une de ces histoires, je serais touché de recevoir votre message.</span>
+      </p>
+      <form action="https://formspree.io/f/xpwzgqrk" method="POST" onsubmit="handleLetterSubmit(event, this)">
+        <input type="hidden" name="_subject" value="給夏生的信">
+        <textarea name="message" required rows="4" style="width:100%; background:transparent; border:0.5px solid var(--line); padding:12px; font-family:'Cormorant Garamond',serif; font-size:14px; color:var(--ink); resize:none; outline:none; letter-spacing:0.03em; line-height:1.8; box-sizing:border-box;"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+          <input type="email" name="email" placeholder="你的email（若希望我回信）" style="background:transparent; border:none; border-bottom:0.5px solid var(--line); padding:6px 0; font-family:'Cormorant Garamond',serif; font-size:12px; color:var(--mist); outline:none; width:60%; letter-spacing:0.03em;">
+          <button type="submit" style="background:none; border:0.5px solid var(--gold); color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:10px; letter-spacing:0.3em; padding:8px 20px; cursor:pointer; text-transform:uppercase; transition:0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--paper)'" onmouseout="this.style.background='none';this.style.color='var(--gold)'">
+            <span class="lang-zh">寄出</span>
+            <span class="lang-en">Send</span>
+            <span class="lang-jp">送る</span>
+            <span class="lang-fr">Envoyer</span>
+          </button>
+        </div>
+        <p class="form-success" style="display:none; font-size:12px; color:var(--mist); margin-top:12px; font-style:italic;">
+          <span class="lang-zh">信已送達。我會讀的。</span>
+          <span class="lang-en">Your letter has arrived. I will read it.</span>
+          <span class="lang-jp">手紙は届きました。必ず読みます。</span>
+          <span class="lang-fr">Votre lettre est arrivée. Je la lirai.</span>
+        </p>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -1099,10 +906,6 @@
   </div>
   
   <div class="timeline">
-    
-    <!-- ══════════════════════════════════════
-         還原：未登場角色雙語並列之高階排版
-    ══════════════════════════════════════ -->
     <div class="timeline-item upcoming" style="margin-top: 100px;">
       <div class="timeline-dot"></div>
       <div class="timeline-number">第二章 · Chapter II</div>
@@ -1308,10 +1111,6 @@ let activeZoneDB = dessertDB;
 let activeZoneNums = ['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ'];
 let currentActiveIndex = 0;
 
-// ══════════════════════════════════════
-// Schema.org 已由靜態 JSON-LD 處理
-// ══════════════════════════════════════
-
 // 語言切換
 function setLang(lang) {
   globalLang = lang;
@@ -1354,9 +1153,7 @@ function enterZone(zoneId) {
     if (el) el.textContent = zone.name[lang];
   });
 
-  // ══════════════════════════════════════
-  // 核心重構：奧菲莉亞專屬「時間鎖定」影音儀式
-  // ══════════════════════════════════════
+  // 奧菲莉亞專屬「時間鎖定」影音儀式
   if (zoneId === 'ophelia') {
     const overlay = document.getElementById('ophelia-overlay');
 
@@ -1378,7 +1175,7 @@ function enterZone(zoneId) {
         iframe.src = dynamicSrc;
 
         // 8秒影片+2秒buffer=10秒後自動淡出
-        setTimeout(() => fadeOutOverlay(overlay), 10000);
+        window.ceremonyTimeout = setTimeout(() => fadeOutOverlay(overlay), 10000);
 
         // 非同步注入YouTube API，避免阻塞頁面渲染
         if (!window._ytScriptLoaded) {
@@ -1440,6 +1237,7 @@ function enterZone(zoneId) {
 function fadeOutOverlay(overlay) {
   if (!overlay || overlay.style.display === 'none') return;
   // 立即熔斷輪詢，防止記憶體洩漏
+  if (window.ceremonyTimeout) clearTimeout(window.ceremonyTimeout);
   if (window._waitForYT) { clearInterval(window._waitForYT); window._waitForYT = null; }
   if (window._waitForYTTimeout) { clearTimeout(window._waitForYTTimeout); window._waitForYTTimeout = null; }
   gsap.to(overlay, { opacity: 0, duration: 1.2, ease: 'power2.inOut', onComplete: () => {
@@ -1448,7 +1246,7 @@ function fadeOutOverlay(overlay) {
     const iframe = document.getElementById('ophelia-iframe');
     if (iframe) iframe.src = 'about:blank';
     window._ytPlayerInited = false;
-    window._ytScriptLoaded = false;
+    // window._ytScriptLoaded = false; // 保留 script 已加載狀態
   }});
 }
 
